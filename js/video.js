@@ -96,9 +96,8 @@ $(document).ready(function(){
 	
 	//fullscreen button clicked
 	$('.btnFS').on('click', function() {
-		if($.isFunction(video[0].webkitRequestFullScreen)) {
-			video[0].webkitRequestFullScreen();
-
+		if($.isFunction(video[0].webkitEnterFullscreen)) {
+			video[0].webkitEnterFullscreen();
 		}	
 		else if ($.isFunction(video[0].mozRequestFullScreen)) {
 			video[0].mozRequestFullScreen();
@@ -137,18 +136,25 @@ $(document).ready(function(){
 	
 	//sound button clicked
 	$('.sound').click(function() {
+		if($('.volume_none').css('display')=="none"){
+			$('.volume_none').show();
+			return false;
+		}
 		video[0].muted = !video[0].muted;
 		$(this).toggleClass('muted');
 		if(video[0].muted) {
-			// $('.volumeBar').css('height',0);
-			$('.volumeBar').css('height', video[0].volume*100+'%');
-			$('.volumeT').text(Math.floor(video[0].volume*100));
+			$('.volumeBar').css('height',0);
+			$('.volumeT').text(0);
 		}
 		else{
 			$('.volumeBar').css('height', video[0].volume*100+'%');
 			$('.volumeT').text(Math.floor(video[0].volume*100));
 		}
 	});
+
+	$("body").not($(".sound")).click(function(){
+		$('.volume_none').hide();
+	})
 	
 	//VIDEO EVENTS
 	//video canplay event
@@ -203,6 +209,25 @@ $(document).ready(function(){
 			updatebar(e.pageX);
 		}
 	});
+	$('.progress').on('touchstart', function(e) {
+		timeDrag = true;
+		var XX = event.targetTouches[0].pageX;
+		updatebar(XX);
+		$(document).on('touchend', function(e) {
+			if(timeDrag) {
+				timeDrag = false;
+				updatebar(XX);
+			}
+		});
+		$(document).on('touchmove', function(e) {
+			if(timeDrag) {
+				XX = event.targetTouches[0].pageX;
+				updatebar(XX);
+			}
+		});
+	});
+	
+
 	var updatebar = function(x) {
 		var progress = $('.progress');
 		

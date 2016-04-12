@@ -74,8 +74,6 @@ $fontColor:(
 /*css end*/
 /* video container */
 .videoContainer{
-	//width:rem-calc(680);
-	//height:rem-calc(480);
 	position:relative;
 	//overflow:hidden;
 	background:#000;
@@ -84,215 +82,20 @@ $fontColor:(
 
 /* video caption css */
 .caption{
-	/*display:none;
-	position:absolute;
-	top:0;
-	left:0;
-	width:100%;
-	padding:10px;
-	color:#ccc;
-	font-size:20px;
-	font-weight:bold;
-	box-sizing: border-box;
-	-ms-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	background: #1F1F1F; /* fallback */
-	/*background:-moz-linear-gradient(top,#242424 50%,#1F1F1F 50%,#171717 100%);
-	background:-webkit-linear-gradient(top,#242424 50%,#1F1F1F 50%,#171717 100%);
-	background:-o-linear-gradient(top,#242424 50%,#1F1F1F 50%,#171717 100%);*/
+	
 }
 
-/*** VIDEO CONTROLS CSS ***/
-/* control holder */
-/*.control{
-	background:rgba(0,0,0,0.6);
-	color:#ccc;
-	position:absolute;
-	bottom:0;
-	left:0;
-	width:100%;
-	height:rem-calc(60);
-	z-index:5;
-	overflow:hidden;
-	/*display:none;*/
-/*}
-/* control top part */
-/*.topControl{
-	@include flexboxChild(1);
-	height:11px;
-	border-bottom:1px solid #404040;
-	padding:1px 5px;
-	background:#1F1F1F; /* fallback */
-	/*background:-moz-linear-gradient(top,#242424 50%,#1F1F1F 50%,#171717 100%);
-	background:-webkit-linear-gradient(top,#242424 50%,#1F1F1F 50%,#171717 100%);
-	background:-o-linear-gradient(top,#242424 50%,#1F1F1F 50%,#171717 100%);
-}
-/* control bottom part */
-/*.btmControl{
-	height:rem-calc(60);
-	@include flexbox();
-}
-.control div.btn {
-	//float:left;
-	width:34px;
-	height:30px;
-	padding:0 5px;
-	border-right:1px solid #404040;
-	cursor:pointer;
-}
-.control div.text{
-	font-size:12px;
-	font-weight:bold;
-	line-height:30px;
-	text-align:center;
-	font-family:verdana;
-	width:20px;
-	border:none;
-	color:#777;
-}
-.control div.btnPlay{
-	background:url(../images/control.png) no-repeat 0 0;
-	border-left:1px solid #404040;
-}
-.control div.paused{
-	background:url(../images/control.png) no-repeat 0 -30px;
-}
-.control div.btnStop{
-	background:url(../images/control.png) no-repeat 0 -60px;
-}
-.control div.spdText{
-	border:none;
-	font-size:14px;
-	line-height:30px;
-	font-style:italic;
-}
-.control div.selected{
-	font-size:15px;
-	color:#ccc;
-}
-.control div.sound{
-	background:url(../images/control.png) no-repeat -88px -30px;
-	border:none;
-	//float:right;
-}
-.control div.sound2{
-	background:url(../images/control.png) no-repeat -88px -60px !important;
-}
-.control div.muted{
-	background:url(../images/control.png) no-repeat -88px 0 !important;
-}
-.control div.btnFS{
-	background:url(../images/control.png) no-repeat -44px 0;
-	//float:right;
-}
-.control div.btnLight{
-	background:url(../images/control.png) no-repeat -44px -60px;
-	border-left:1px solid #404040;
-	float:right;
-}
-.control div.lighton{
-	background:url(../images/control.png) no-repeat -44px -30px !important;
-}
 
-/* PROGRESS BAR CSS */
-/* Progress bar */
-/*.progress {
-	width:85%;
-	height:10px;
-	position:relative;
-	float:left;
-	cursor:pointer;
-	background: #444; /* fallback */
-	/*background:-moz-linear-gradient(top,#666,#333);
-	background:-webkit-linear-gradient(top,#666,#333);
-	background:-o-linear-gradient(top,#666,#333);
-	box-shadow:0 2px 3px #333 inset;
-	-moz-box-shadow:0 2px 3px #333 inset;
-	-webkit-box-shadow:0 2px 3px #333 inset;
-	border-radius:10px;
-	-moz-border-radius:10px;
-	-webkit-border-radius:10px;
-}
-.progress span {
-	height:100%;
-	position:absolute;
-	top:0;
-	left:0;
-	display:block;
-	border-radius:10px;
-	-moz-border-radius:10px;
-	-webkit-border-radius:10px;
-}
-.timeBar{
-	z-index:10;
-	width:0;
-	background: #3FB7FC; /* fallback */
-	/*background:-moz-linear-gradient(top,#A0DCFF 50%,#3FB7FC 50%,#16A9FF 100%);
-	background:-webkit-linear-gradient(top,#A0DCFF 50%,#3FB7FC 50%,#16A9FF 100%);
-	background:-o-linear-gradient(top,#A0DCFF 50%,#3FB7FC 50%,#16A9FF 100%);
-	box-shadow:0 0 1px #fff;
-	-moz-box-shadow:0 0 1px #fff;
-	-webkit-box-shadow:0 0 1px #fff;
-}
-.timeBar:after{
-	content: '';
-	position: absolute;
-	width:10px;
-	height:10px;
-	background-color: red;
-	right:10px;
-}
-.bufferBar{
-	z-index:5;
-	width:0;
-	background: #777;
-	background:-moz-linear-gradient(top,#999,#666);
-	background:-webkit-linear-gradient(top,#999,#666);
-	background:-o-linear-gradient(top,#999,#666);
-	box-shadow:2px 0 5px #333;
-	-moz-box-shadow:2px 0 5px #333;
-	-webkit-box-shadow:2px 0 5px #333;
-}
-/* time and duration */
-/*.time{
-	width:15%;
-	float:right;
-	text-align:center;
-	font-size:11px;
-	line-height:12px;
-}
-
-/* VOLUME BAR CSS */
-/* volume bar */
-/*.volume{
-	position:relative;
-	cursor:pointer;
-	width:70px;
-	height:10px;
-	float:right;
-	margin-top:10px;
-	margin-right:10px;
-}
-.volumeBar{
-	display:block;
-	height:100%;
-	position:absolute;
-	top:0;
-	left:0;
-	background-color:#eee;
-	z-index:10;
-}*/
 
 
 
 
 .topControl{
-	//background:rgba(0,0,0,0.3);
-	background:red;
+	background:rgba(0,0,0,0.3);
+	//background:red;
 	color:#FFF;
 	position:absolute;
-	bottom:rem-calc(10);
+	bottom:0;
 	left:0;
 	width:100%;
 	height:rem-calc(38);
@@ -329,8 +132,14 @@ $fontColor:(
 	background-size: rem-calc(132) rem-calc(90);
 	background-position:rem-calc(0) rem-calc(-30);
 }
-.sound{
+.soundBox{
+	position:relative;
 	margin:0 rem-calc(20);
+	width:rem-calc(34);
+	height:rem-calc(30);
+	cursor:pointer;
+}
+.sound{
 	//background:url(../images/control.png) no-repeat -88px -30px;
 	background-image: url(../images/control.png);
 	background-repeat: no-repeat;
@@ -338,7 +147,6 @@ $fontColor:(
 	background-position:rem-calc(-88) rem-calc(-30);
 }
 .sound2{
-	margin:0 rem-calc(20);
 	//background:url(../images/control.png) no-repeat -88px -60px !important;
 	background-image: url(../images/control.png);
 	background-repeat: no-repeat;
@@ -360,7 +168,9 @@ $fontColor:(
 	background-size: rem-calc(132) rem-calc(90);
 	background-position:rem-calc(-44) rem-calc(0);
 }
-
+.volume_none{
+	display:none;
+}
 .volume_box{
 	position:absolute;
 	bottom:rem-calc(30);
@@ -370,12 +180,9 @@ $fontColor:(
 	height:rem-calc(180);
 	background:rgba(200,200,200,0.6);
 	border-radius:3px;
-	//@include display-flex;
-	//@include flex-direction(column);
-	display: -webkit-flex;
-	-webkit-flex-direction: column;
-	//@include align-items(center);
-	-webkit-align-items: center;
+	@include display-flex;
+	@include flex-direction(column);
+	@include align-items(center);
 	span{
 		display:block;
 	}
@@ -392,8 +199,7 @@ $fontColor:(
 	width:rem-calc(10);
 	border-radius:rem-calc(10);
 	background:rgba(255,255,255,0.3);
-	//@include flex(1);
-	-webkit-flex: 1;
+	@include flex(1);
 
 	
 }
