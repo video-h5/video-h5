@@ -98,7 +98,7 @@ $(document).ready(function(){
 	$('.btnFS').on('click', function() {
 		if($.isFunction(video[0].webkitRequestFullScreen)) {
 			video[0].webkitRequestFullScreen();
-			
+
 		}	
 		else if ($.isFunction(video[0].mozRequestFullScreen)) {
 			video[0].mozRequestFullScreen();
@@ -106,9 +106,6 @@ $(document).ready(function(){
 		else {
 			alert('Your browsers doesn\'t support fullscreen');
 		}
-		
-
-
 	});
 	
 	//light bulb button clicked
