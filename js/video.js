@@ -96,8 +96,9 @@ $(document).ready(function(){
 	
 	//fullscreen button clicked
 	$('.btnFS').on('click', function() {
-		if($.isFunction(video[0].webkitEnterFullscreen)) {
-			video[0].webkitEnterFullscreen();
+		if($.isFunction(video[0].webkitRequestFullScreen)) {
+			video[0].webkitRequestFullScreen();
+			
 		}	
 		else if ($.isFunction(video[0].mozRequestFullScreen)) {
 			video[0].mozRequestFullScreen();
@@ -105,6 +106,9 @@ $(document).ready(function(){
 		else {
 			alert('Your browsers doesn\'t support fullscreen');
 		}
+		
+
+
 	});
 	
 	//light bulb button clicked
@@ -139,7 +143,7 @@ $(document).ready(function(){
 		video[0].muted = !video[0].muted;
 		$(this).toggleClass('muted');
 		if(video[0].muted) {
-			//$('.volumeBar').css('height',0);
+			// $('.volumeBar').css('height',0);
 			$('.volumeBar').css('height', video[0].volume*100+'%');
 			$('.volumeT').text(Math.floor(video[0].volume*100));
 		}
