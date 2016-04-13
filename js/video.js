@@ -96,15 +96,42 @@ $(document).ready(function(){
 	
 	//fullscreen button clicked
 	$('.btnFS').on('click', function() {
-		if($.isFunction(video[0].webkitEnterFullscreen)) {
-			video[0].webkitEnterFullscreen();
-		}	
-		else if ($.isFunction(video[0].mozRequestFullScreen)) {
+		// if($(this).hasClass("btnFSW")){
+		// 	$(this).removeClass("btnFSW");
+		// 	if($.isFunction(document.webkitCancelFullScreen)) {
+		// 		document.webkitCancelFullScreen();
+		// 	}	
+		// 	else if ($.isFunction(document.mozCancelFullScreen)) {
+		// 		document.mozCancelFullScreen();
+		// 	}
+		// 	else {
+		// 		alert('Your browsers doesn\'t support fullscreen');
+		// 	}
+		// }else{
+		// 	$(this).addClass("btnFSW");
+		// 	if($.isFunction(video[0].webkitRequestFullScreen)) {
+		// 		video[0].webkitRequestFullScreen();
+		// 	}	
+		// 	else if ($.isFunction(video[0].mozRequestFullScreen)) {
+		// 		video[0].mozRequestFullScreen();
+		// 	}
+		// 	else {
+		// 		alert('Your browsers doesn\'t support fullscreen');
+		// 	}
+		// }
+		
+		if(document.webkitIsFullScreen){
+			document.webkitCancelFullScreen();
+		}else{
+			video[0].webkitRequestFullScreen();
+		}
+		/*else if ($.isFunction(video[0].mozRequestFullScreen)) {
 			video[0].mozRequestFullScreen();
 		}
 		else {
 			alert('Your browsers doesn\'t support fullscreen');
-		}
+		}*/
+		
 	});
 	
 	//light bulb button clicked
@@ -183,8 +210,7 @@ $(document).ready(function(){
 		}	
 	});
 	
-	//video seeked event
-	video.on('seeked', function() { });
+
 	
 	//video waiting for more data event
 	video.on('waiting', function() {

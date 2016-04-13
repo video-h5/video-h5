@@ -1,6 +1,6 @@
 @charset "utf-8";
 @import "reset";
-@import "compass/css3";
+@import "mixin-css3";
 @import "rem-calc";
 
 //[variable]{{{
@@ -103,10 +103,9 @@ $fontColor:(
 	z-index:999999999999999;
 	font-size:rem-calc(20);
 	//overflow:hidden;
-	//@include display-flex;
-	display: -webkit-flex;
-	-webkit-align-items: center;
-	//@include align-items(center);
+	@include flexbox();
+	@include prefix(align-items,center);
+	//@include align-items,center(center);
 }
 
 .btn {
@@ -180,9 +179,11 @@ $fontColor:(
 	height:rem-calc(180);
 	background:rgba(200,200,200,0.6);
 	border-radius:3px;
-	@include display-flex;
-	@include flex-direction(column);
-	@include align-items(center);
+	@include flexboxChild(1);
+	@include prefix(flex-direction,column);
+	//@include flex-direction();
+	//@include align-items(center);
+	@include prefix(align-items,center);
 	span{
 		display:block;
 	}
@@ -199,7 +200,7 @@ $fontColor:(
 	width:rem-calc(10);
 	border-radius:rem-calc(10);
 	background:rgba(255,255,255,0.3);
-	@include flex(1);
+	@include flexboxChild(1);
 
 	
 }
@@ -249,7 +250,7 @@ $fontColor:(
 	cursor:pointer;
 	background: rgba(237,237,228,0.3); 
 	//@include flex(1);
-	-webkit-flex: 1;
+	@include flexboxChild(1);
 	border-radius:rem-calc(10);
 }
 .progress span {
