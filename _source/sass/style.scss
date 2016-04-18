@@ -1,5 +1,6 @@
 @charset "utf-8";
 @import "reset";
+@import "compass/css3";
 @import "mixin-css3";
 @import "rem-calc";
 
@@ -102,10 +103,8 @@ $fontColor:(
 	padding:rem-calc(11) 0; 
 	z-index:999999999999999;
 	font-size:rem-calc(20);
-	//overflow:hidden;
 	@include flexbox();
-	@include prefix(align-items,center);
-	//@include align-items,center(center);
+	@include align-items(center);
 }
 
 .btn {
@@ -179,11 +178,9 @@ $fontColor:(
 	height:rem-calc(180);
 	background:rgba(200,200,200,0.6);
 	border-radius:3px;
-	@include flexboxChild(1);
+	@include flexbox();
 	@include prefix(flex-direction,column);
-	//@include flex-direction();
-	//@include align-items(center);
-	@include prefix(align-items,center);
+	@include align-items(center);
 	span{
 		display:block;
 	}

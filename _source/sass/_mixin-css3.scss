@@ -71,15 +71,24 @@
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
-  display: box;
-  box-orient: horizontal;
+  display: -webkit-flex;
+  display: flex;
 }
 
-@mixin flexboxChild($n){
-  -webkit-box-flex: $n;
-  -moz-box-flex: $n;
-  -ms-flex: $n;
-  box-flex: $n;
+@mixin flexboxChild($values){
+  -webkit-box-flex: $values;
+  -moz-box-flex:  $values;
+  -webkit-flex:  $values;
+  -ms-flex:  $values;
+  flex:  $values;
+}
+
+@mixin align-items($val){
+  -webkit-box-align: $val; 
+  -moz-box-align: $val;
+  -ms-flex-align: $val; 
+  -webkit-align-items: $val;
+  align-items: $val; 
 }
 
 @mixin boxShadow($param){
