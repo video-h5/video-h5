@@ -297,6 +297,19 @@ $fontColor:(
 	cursor:pointer;
 }
 
+
+.videoContainer-center{
+	#myVideo{
+		position:fixed;
+		z-index:99;
+		background:rgba(0,0,0,1);
+	}
+	.topControl{
+		position:fixed;
+		z-index:100;
+	}
+}
+
 // set responsive
 @for $mediaIndex from 1 to length($mediaArray) + 1 {
   $media: nth($mediaArray, $mediaIndex);

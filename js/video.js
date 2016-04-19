@@ -1,4 +1,17 @@
 $(document).ready(function() {
+
+$( document ).bind(
+
+    'fullscreenchange webkitfullscreenchange mozfullscreenchange',
+
+    function(){
+        $(".videoContainer").removeClass("videoContainer-center")
+    }
+
+);
+
+
+
     //INITIALIZE
     var video = $('#myVideo');
 
@@ -143,6 +156,7 @@ $(document).ready(function() {
         } else if (element.msRequestFullscreen) {
             element.msRequestFullscreen();
         }
+        $(".videoContainer").addClass("videoContainer-center")
     }
     // 退出 fullscreen
     function exitFullscreen() {
@@ -153,7 +167,9 @@ $(document).ready(function() {
         } else if (document.webkitExitFullscreen) {
             document.webkitExitFullscreen();
         }
+        $(".videoContainer").removeClass("videoContainer-center")
     }
+
 
 
     //light bulb button clicked

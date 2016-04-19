@@ -90,6 +90,9 @@ a { text-decoration: none; color: #666; }
 
 #init { background: url(../images/bigplay.png) no-repeat 50% 50% !important; cursor: pointer; }
 
+.videoContainer-center #myVideo { position: fixed; z-index: 99; background: black; }
+.videoContainer-center .topControl { position: fixed; z-index: 100; }
+
 @media only screen { html { font-size: 12px; } }
 @media only screen and (min-width: 360px) and (max-width: 374px) { html { font-size: 14px; } }
 @media only screen and (min-width: 375px) and (max-width: 413px) { html { font-size: 14px; } }
