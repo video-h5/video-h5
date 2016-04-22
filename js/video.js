@@ -1,13 +1,47 @@
 $(document).ready(function() {
-    //INITIALIZE
+    //初始化
     var video = $('#myVideo');
-	var aa=video.wrap("<div class='video-box'></div>").parent();
-	aa.css('background', 'red');
+    var videoClassName=video.attr('class');
+
+    // 为video添加父级容器，并获取video父级
+	var videoParent=video.wrap("<div></div>").parent();
+
+    // 将video上的属性复制到父级之上
+    video.attr('class', 'vjs-tech');
+    videoParent.addClass(videoClassName);
+
+    var _controlHtml="<div class=\"topControl\">"
+                        +"<div class=\"btnPlay btn\" title=\"Play/Pause video\"></div>"
+                        +"<div class=\"time\">"
+                            +"<span class=\"current\">00:00</span>/<span class=\"duration\">00:00</span>"
+                        +"</div>"
+                        +"<div class=\"progress\">"
+                            +"<span class=\"bufferBar\"></span>"
+                            +"<span class=\"timeBar\"></span>"
+                        +"</div>"
+                        +"<div class=\"soundBox\">"
+                            +"<div class=\"sound sound2 btn\" title=\"Mute/Unmute sound\"></div>"
+                            +"<span class=\"volume_none\">"
+                                +"<div class=\"volume_box\">"
+                                    +"<span class=\"volumeT\">100</span>"
+                                +"<div class=\"volume\" title=\"Set volume\">"
+                                    +"<span class=\"volumeBar\"></span>"
+                                +"</div>"
+                                +"<span class=\"volumeB\">0</span>"
+                            +"</div>"
+                            +"</span>"
+                        +"</div>"
+                        +"<div class=\"btnFS btn\" title=\"Switch to full screen\"></div>"
+                    +"</div>"
+                    +"<div class=\"loading\"></div>";
+
+    videoParent.append(_controlHtml);
+
     //remove default control when JS loaded
     video.removeAttr('controls');
     $('.control').show() //.css({'bottom':-45});
-    $('.loading').fadeIn(500);
-    $('.caption').fadeIn(500);
+    $('.loading').show(500);
+    $('.caption').show(500);
 
     //before everything get started
     video.on('loadedmetadata', function() {
@@ -22,24 +56,15 @@ $(document).ready(function() {
         setTimeout(startBuffer, 150);
 
         //bind video events
-        $('.videoContainer')
+        $('.video-js')
             .append('<div id="init"></div>')
-            .hover(function() {
-                $('.control').stop().animate({ 'bottom': 0 }, 500);
-                $('.caption').stop().animate({ 'top': 0 }, 500);
-            }, function() {
-                if (!volumeDrag && !timeDrag) {
-                    $('.control').stop() //.animate({'bottom':-45}, 500);
-                    $('.caption').stop().animate({ 'top': -45 }, 500);
-                }
-            })
             .on('click', function() {
                 $('#init').remove();
                 $('.btnPlay').addClass('paused');
                 $(this).unbind('click');
                 video[0].play();
             });
-        $('#init').fadeIn(200);
+        $('#init').show(200);
     });
 
     //display video buffering bar
@@ -208,7 +233,7 @@ $(document).ready(function() {
     //VIDEO EVENTS
     //video canplay event
     video.on('canplay', function() {
-        $('.loading').fadeOut(100);
+        $('.loading').hide(100);
     });
 
     //video canplaythrough event
@@ -228,7 +253,7 @@ $(document).ready(function() {
     video.on('seeking', function() {
         //if video fully loaded, ignore loading screen
         if (!completeloaded) {
-            $('.loading').fadeIn(200);
+            $('.loading').show(200);
         }
     });
 
@@ -236,7 +261,7 @@ $(document).ready(function() {
 
     //video waiting for more data event
     video.on('waiting', function() {
-        $('.loading').fadeIn(200);
+        $('.loading').show(200);
     });
 
     //VIDEO PROGRESS BAR

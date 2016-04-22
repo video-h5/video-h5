@@ -1,313 +1,247 @@
 @charset "utf-8";
-@import "reset";
+$rem-base: 27px;
+$reset:true;
+$Response:true;
+@import "compass", "mobile-mixin";
 @import "mixin-css3";
-@import "rem-calc";
-
-//[variable]{{{
-$img: "../images/";
-$imgAbs: "/";
-$version: "20160406";
-
-
-// set Media
-$mediaArray: "only screen",
-    "only screen and (min-width: 360px) and (max-width: 374px)",
-    "only screen and (min-width: 375px) and (max-width: 413px)",
-    "only screen and (min-width: 414px) and (max-width: 479px)",
-    "only screen and (min-width: 480px) and (max-width: 719px)",
-    "only screen and (min-width: 720px)";
-
-
-
-$rem-base: 28px;
-$ratioFor320: 720/320; //iphone 4\5
-$ratioFor360: 720/360;
-$ratioFor375: 720/375; //iphone 6
-$ratioFor414: 720/414; //iphone 6p
-$ratioFor480: 720/480;
-$ratioFor720: 720/720;
-$htmSizeArray:  floor($rem-base/$ratioFor320),
-                floor($rem-base/$ratioFor360),
-                floor($rem-base/$ratioFor375),
-                floor($rem-base/$ratioFor414),
-                floor($rem-base/$ratioFor480),
-                floor($rem-base/$ratioFor720);
-
-$mediaDeviceArray: "only screen",
-  "only screen and (-webkit-min-device-pixel-ratio: 2),
-   only screen and (   min--moz-device-pixel-ratio: 2),
-   only screen and (   -o-min-device-pixel-ratio: 2/1),
-   only screen and (        min-device-pixel-ratio: 2),
-   only screen and (             min-resolute: 300dpi),
-   only screen and (             min-resolute: 2dppx )";
-
-$bgSuffix: "", "@2x";
-
-$fontSize: (
-  fz16: rem-calc(16px),
-  fz18: rem-calc(18px),
-  fz20: rem-calc(20px),
-  fz21: rem-calc(21px),
-  fz22: rem-calc(22px),
-  fz24: rem-calc(24px),
-  fz26: rem-calc(26px),
-  fz28: rem-calc(28px),
-  fz30: rem-calc(30px),
-  fz32: rem-calc(32px),
-  fz42: rem-calc(42px),
-  fz48: rem-calc(48px)
-);
-
-$fontColor:(
-  blue:#379ddb,
-  gray:#999,
-  yel:#f90,
-  org:#f60,
-  red:#f00,
-  placeholder:#c7c7c7
-);
-
-
-/*css*/
-@include global_reset_m();
 
 /*css end*/
+
+
 /* video container */
-.videoContainer{
-	position:relative;
-	//overflow:hidden;
-	background:#000;
-	color:#ccc;
+
+.video-js {
+    position: relative;
+    display: block;
+    padding: 0;
+    vertical-align: top;
+    font-size: 10px;
+    line-height: 1;
+    font-weight: normal;
+    font-style: normal;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff;
+    background-color: #000;
+    @include user-select(none);
 }
+
+.vjs-default-skin {
+    padding-top: 56.25%;
+}
+
+.vjs-tech {
+    position: absolute;
+    top: 0;
+}
+
 
 /* video caption css */
-.caption{
-	
-}
 
+.caption {}
 
-
-
-
-
-.topControl{
-	background:rgba(0,0,0,0.3);
-	//background:red;
-	color:#FFF;
-	position:absolute;
-	bottom:0;
-	left:0;
-	width:100%;
-	height:rem-calc(38);
-	padding:rem-calc(11) 0; 
-	z-index:999999999999999;
-	font-size:rem-calc(20);
-	//overflow:hidden;
-	@include flexbox();
-	@include prefix(align-items,center);
-	//@include align-items,center(center);
+.topControl {
+    position: absolute;
+    z-index: 9;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: rem-calc(38);
+    padding: rem-calc(11 0);
+    font-size: rem-calc(20);
+    @include flexbox();
+    @include prefix(align-items, center);
+    background: rgba(0, 0, 0, 0.3);
+    color: #FFF;
 }
 
 .btn {
-	position:relative;
-	width:rem-calc(34);
-	height:rem-calc(30);
-	cursor:pointer;
-}
-.btnPlay{
-
-	margin:0 rem-calc(20) 0 rem-calc(25);
-	background-image: url(../images/control.png);
-	background-repeat: no-repeat;
-	background-size: rem-calc(132) rem-calc(90);
-	background-position:rem-calc(0) rem-calc(0);
-}
-.paused{
-
-	margin:0 rem-calc(20) 0 rem-calc(25);
-	//background:url(../images/control.png) no-repeat 0 -30px;
-	background-image: url(../images/control.png);
-	background-repeat: no-repeat;
-	background-size: rem-calc(132) rem-calc(90);
-	background-position:rem-calc(0) rem-calc(-30);
-}
-.soundBox{
-	position:relative;
-	margin:0 rem-calc(20);
-	width:rem-calc(34);
-	height:rem-calc(30);
-	cursor:pointer;
-}
-.sound{
-	//background:url(../images/control.png) no-repeat -88px -30px;
-	background-image: url(../images/control.png);
-	background-repeat: no-repeat;
-	background-size: rem-calc(132) rem-calc(90);
-	background-position:rem-calc(-88) rem-calc(-30);
-}
-.sound2{
-	//background:url(../images/control.png) no-repeat -88px -60px !important;
-	background-image: url(../images/control.png);
-	background-repeat: no-repeat;
-	background-size: rem-calc(132) rem-calc(90);
-	background-position:rem-calc(-88) rem-calc(-60)!important;
-}
-.muted{
-	//background:url(../images/control.png) no-repeat -88px 0 !important;
-	background-image: url(../images/control.png);
-	background-repeat: no-repeat;
-	background-size: rem-calc(132) rem-calc(90);
-	background-position:rem-calc(-88) rem-calc(0)!important;
-}
-.btnFS{
-	margin-right:rem-calc(20);
-	//background:url(../images/control.png) no-repeat -44px 0;
-	background-image: url(../images/control.png);
-	background-repeat: no-repeat;
-	background-size: rem-calc(132) rem-calc(90);
-	background-position:rem-calc(-44) rem-calc(0);
-}
-.volume_none{
-	display:none;
-}
-.volume_box{
-	position:absolute;
-	bottom:rem-calc(30);
-	left:50%;
-	margin-left:rem-calc(-29);
-	width:rem-calc(58);
-	height:rem-calc(180);
-	background:rgba(200,200,200,0.6);
-	border-radius:3px;
-	@include flexboxChild(1);
-	@include prefix(flex-direction,column);
-	//@include flex-direction();
-	//@include align-items(center);
-	@include prefix(align-items,center);
-	span{
-		display:block;
-	}
-	.volumeT{
-		margin:rem-calc(12) 0;
-	}
-	.volumeB{
-		margin:rem-calc(12) 0;
-	}
-}
-.volume{
-	position:relative;
-	cursor:pointer;
-	width:rem-calc(10);
-	border-radius:rem-calc(10);
-	background:rgba(255,255,255,0.3);
-	@include flexboxChild(1);
-
-	
-}
-.volumeBar{
-	display:block;
-	width:rem-calc(10);
-	border-radius:rem-calc(10);
-	height:100%;
-	position:absolute;
-	bottom:0;
-	left:0;
-	background-color:#ff7f00;
-	z-index:10;
-	&:before{
-		content:'';
-		position:absolute;
-		z-index:2;
-		top:rem-calc(-7);
-		left:50%;
-		margin-left:rem-calc(-7);
-		width:rem-calc(14);
-		height:rem-calc(14);
-		border-radius:100%;
-		background-color:#ff7f00;
-	}
-	&:after{
-		content:'';
-		position:absolute;
-		z-index:1;
-		top:rem-calc(-12);
-		left:50%;
-		margin-left:rem-calc(-12);
-		width:rem-calc(24);
-		height:rem-calc(24);
-		border-radius:100%;
-		background-color:#FFF;
-	}
+    position: relative;
+    width: rem-calc(34);
+    height: rem-calc(30);
+    cursor: pointer;
 }
 
-
-.time{
-	margin-right:rem-calc(20);
-}
-.progress {
-	height:rem-calc(10);
-	position:relative;
-	cursor:pointer;
-	background: rgba(237,237,228,0.3); 
-	//@include flex(1);
-	@include flexboxChild(1);
-	border-radius:rem-calc(10);
-}
-.progress span {
-	height:100%;
-	position:absolute;
-	top:0;
-	left:0;
-	display:block;
-	border-radius:rem-calc(10);
-}
-.timeBar{
-	z-index:10;
-	width:0;
-	background: #FFF;
-	
-}
-.timeBar:after{
-	content: '';
-	position: absolute;
-	width:rem-calc(25);
-	height:rem-calc(25);
-	background-color: #FFF;
-	right:rem-calc(-12.5);
-	top:rem-calc(-7.5);
-	border-radius:rem-calc(100%);
-}
-.bufferBar{
-	z-index:5;
-	width:0;
-	background: rgba(237,237,228,0.3); 
-	
-}
-/* OTHERS CSS */
-/* video screen cover */
-.loading, #init{
-	position:absolute;
-	top:0;
-	left:0;
-	width:100%;
-	height:100%;
-	background:url(../images/loading.gif) no-repeat 50% 50%;
-	z-index:2;
-	display:none;
-}
-#init{
-	background:url(../images/bigplay.png) no-repeat 50% 50% !important;
-	cursor:pointer;
+.btnPlay {
+    margin: rem-calc(0 20 0 25);
+    background: image-url("control.png") no-repeat 0 0;
+    background-size: rem-calc(132 90);
+    background-position: 0 0;
 }
 
-// set responsive
-@for $mediaIndex from 1 to length($mediaArray) + 1 {
-  $media: nth($mediaArray, $mediaIndex);
-  $htmlFz: nth($htmSizeArray, $mediaIndex);
-  @media #{$media}{
-    html {
-      font-size: $htmlFz;
+.paused {
+    margin: rem-calc(0 20 0 25);
+    background: image-url("control.png") no-repeat;
+    background-size: rem-calc(132 90);
+    background-position: rem-calc(0 -30);
+}
+
+.soundBox {
+    position: relative;
+    width: rem-calc(34);
+    height: rem-calc(30);
+    margin: rem-calc(0 20);
+    cursor: pointer;
+}
+
+.sound {
+    background: image-url("control.png") no-repeat;
+    background-size: rem-calc(132 90);
+    background-position: rem-calc(-88 -30);
+}
+
+.sound2 {
+    background: image-url("control.png") no-repeat;
+    background-size: rem-calc(132 90);
+    background-position: rem-calc(-88 -60)!important;
+}
+
+.muted {
+    background: image-url("control.png") no-repeat;
+    background-size: rem-calc(132 90);
+    background-position: rem-calc(-88 0)!important;
+}
+
+.btnFS {
+    margin-right: rem-calc(20);
+    background: image-url("control.png") no-repeat;
+    background-size: rem-calc(132 90);
+    background-position: rem-calc(-44 0);
+}
+
+.volume_none {
+    display: none;
+}
+
+.volume_box {
+    position: absolute;
+    bottom: rem-calc(30);
+    left: 50%;
+    width: rem-calc(58);
+    height: rem-calc(180);
+    margin-left: rem-calc(-29);
+    border-radius: 3px;
+    background: rgba(200, 200, 200, 0.6);
+    @include flexboxChild(1);
+    @include prefix(flex-direction, column);
+    @include prefix(align-items, center);
+    span {
+        display: block;
     }
-  }
+    .volumeT {
+        margin: rem-calc(12 0);
+    }
+    .volumeB {
+        margin: rem-calc(12 0);
+    }
 }
 
+.volume {
+    position: relative;
+    width: rem-calc(10);
+    border-radius: rem-calc(10);
+    background: rgba(255, 255, 255, 0.3);
+    @include flexboxChild(1);
+    cursor: pointer;
+}
+
+.volumeBar {
+    position: absolute;
+    z-index: 10;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: rem-calc(10);
+    height: 100%;
+    border-radius: rem-calc(10);
+    background-color: #ff7f00;
+    &:before {
+        content: '';
+        position: absolute;
+        z-index: 2;
+        top: rem-calc(-7);
+        left: 50%;
+        width: rem-calc(14);
+        height: rem-calc(14);
+        margin-left: rem-calc(-7);
+        border-radius: 100%;
+        background-color: #ff7f00;
+    }
+    &:after {
+        content: '';
+        position: absolute;
+        z-index: 1;
+        top: rem-calc(-12);
+        left: 50%;
+        width: rem-calc(24);
+        height: rem-calc(24);
+        margin-left: rem-calc(-12);
+        border-radius: 100%;
+        background-color: #FFF;
+    }
+}
+
+.time {
+    margin-right: rem-calc(20);
+}
+
+.progress {
+    position: relative;
+    height: rem-calc(10);
+    @include flexboxChild(1);
+    border-radius: rem-calc(10);
+    background: rgba(237, 237, 228, 0.3);
+    cursor: pointer;
+}
+
+.progress span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    height: 100%;
+    border-radius: rem-calc(10);
+}
+
+.timeBar {
+    z-index: 10;
+    width: 0;
+    background: #FFF;
+    &:after {
+        content: '';
+        position: absolute;
+        width: rem-calc(25);
+        height: rem-calc(25);
+        right: rem-calc(-12.5);
+        top: rem-calc(-7.5);
+        border-radius: 100%;
+        background-color: #FFF;
+    }
+}
+
+.bufferBar {
+    z-index: 5;
+    width: 0;
+    background: rgba(237, 237, 228, 0.3);
+}
+
+
+/* OTHERS CSS */
+
+
+/* video screen cover */
+
+.loading, #init {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: image-url("loading.gif") no-repeat 50% 50%;
+    z-index: 2;
+    display: none;
+}
+
+#init {
+    background: image-url("bigplay.png") no-repeat 50% 50% !important;
+    cursor: pointer;
+}
