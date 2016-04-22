@@ -1,7 +1,8 @@
 $(document).ready(function() {
     //INITIALIZE
     var video = $('#myVideo');
-
+	var aa=video.wrap("<div class='video-box'></div>").parent();
+	aa.css('background', 'red');
     //remove default control when JS loaded
     video.removeAttr('controls');
     $('.control').show() //.css({'bottom':-45});
