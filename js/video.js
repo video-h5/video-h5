@@ -9,21 +9,73 @@ $( document ).bind(
         if (!document.webkitIsFullScreen) {
             $(".videoContainer").removeClass("videoContainer-center")
         }
-        
     }
-
 );
 
 
 
-    //INITIALIZE
-    var video = $('#myVideo');
+//INITIALIZE
+    
 
-    //删除默认JS加载时的控制
+
+
+$("video").each(function(){
+    videos($(this));
+})
+
+
+
+function videos(obj){
+
+    var video = obj;//video 包裹div
+    video.wrap("<div class='videoContainer'></div>");
+    var videoContainer = video.closest('.videoContainer'); //video
+        //删除默认JS加载时的控制
     video.removeAttr('controls');
-
-    $('.topControl').show() //.css({'bottom':-45});
-    $('.loading').fadeIn(500);
+    videoContainer.append(
+        '<div class="topControl">'
+            +'<div class="btnPlay btn" title="Play/Pause video"></div>'    
+            +'<div class="time">'    
+                +'<span class="current">00:00</span>/<span class="duration">00:00</span>'        
+            +'</div>'    
+            +'<div class="progress">'   
+                +'<span class="bufferBar"></span>'        
+                +'<span class="timeBar"></span>'        
+            +'</div>'    
+            +'<div class="soundBox">'    
+                +'<div class="sound sound2 btn" title="Mute/Unmute sound"></div>'        
+                +'<span class="volume_none">'        
+                    +'<div class="volume_box">'            
+                        +'<span class="volumeT">100</span>'                
+                        +'<div class="volume" title="Set volume">'                
+                            +'<span class="volumeBar"></span>'                    
+                        +'</div>'                
+                        +'<span class="volumeB">0</span>'                
+                    +'</div>'            
+                +'</span>'        
+            +'</div>'    
+            +'<div class="btnFS btn" title="Switch to full screen"></div>'    
+        +'</div>'
+        +'<div class="loading"></div>'
+        )
+    
+    var topControl = videoContainer.find('.topControl')  //控制条
+    var loading    = videoContainer.find('.loading') //加载动画
+    var current    = videoContainer.find('.current') //当前播放时间进度
+    var duration   = videoContainer.find('.duration')//视频总时间
+    var btnPlay    = videoContainer.find('.btnPlay') //播放按钮
+    var bufferBar  = videoContainer.find('.bufferBar') //视频加载进度条
+    var timeBar    = videoContainer.find('.timeBar') //视频播放进度条
+    var btnStop    = videoContainer.find('.btnStop')  //暂停按钮
+    var btnFS      = videoContainer.find('.btnFS')  //全屏按钮
+    var sound      = videoContainer.find('.sound') //声音按钮
+    var volume_none= videoContainer.find('.volume_none') //声音条包裹div
+    var volumeBar  = videoContainer.find('.volumeBar') //声音进度条
+    var volumeT    = videoContainer.find('.volumeT')  //当前声音大小
+    var progress   = videoContainer.find('.progress') //播放进度条包裹div
+    var volume     = videoContainer.find('.volume')  //声音背景条
+    topControl.show() //.css({'bottom':-45});
+    loading.fadeIn(500);
     //$('.caption').fadeIn(500);
 
     //在一切开始之前
@@ -32,14 +84,15 @@ $( document ).bind(
         //$('.caption').animate({ 'top': -45 }, 300);
         var time=null;
         time=setTimeout(function(){
-            $('.topControl').stop().animate({'bottom':-$('.topControl').outerHeight()}, 500);
+            topControl.stop().animate({'bottom':-topControl.outerHeight()}, 500);
+            volume_none.hide();
         },3000)
 
         //设置视频属性
         //设置视频开始时间
-        $('.current').text(timeFormat(0));
+        current.text(timeFormat(0));
         //设置视频总时间
-        $('.duration').text(timeFormat(video[0].duration));
+        duration.text(timeFormat(video[0].duration));
         //设置默认声音音量
         updateVolume(0, 0.5);
 
@@ -47,33 +100,37 @@ $( document ).bind(
         setTimeout(startBuffer, 150);
 
         //绑定视频事件
-        $('.videoContainer')
+        videoContainer
             //.append('<div id="init"></div>')
             .hover(function() {
-                $('.topControl').stop().animate({ 'bottom': 0 }, 500);
+                topControl.stop().animate({ 'bottom': 0 }, 500);
                 //$('.caption').stop().animate({ 'top': 0 }, 500);
             }, function() {
                 if (!volumeDrag && !timeDrag) {
-                    $('.topControl').stop().animate({'bottom':-$('.topControl').outerHeight()}, 500);
+                    topControl.stop().animate({'bottom':-topControl.outerHeight()}, 500);
+
+                    volume_none.hide();
                     //$('.caption').stop().animate({ 'top': -45 }, 500);
                 }
             })
             .on('click', function() {
                 //$('#init').remove();
-                $('.btnPlay').addClass('paused');
+                btnPlay.addClass('paused');
                 $(this).unbind('click');
                 video[0].play();
             });
         //$('#init').fadeIn(200);
         
-        $('.videoContainer').bind("touchstart",function(){
+        videoContainer.bind("touchstart touchmove",function(){
             clearTimeout(time);
-            $('.topControl').stop().animate({ 'bottom': 0 }, 500);
+            topControl.stop().animate({ 'bottom': 0 }, 500);
         })
 
-        $('.videoContainer').bind("touchend",function(){
+        videoContainer.bind("touchend",function(){
+                clearTimeout(time);
                 time=setTimeout(function(){
-                    $('.topControl').stop().animate({'bottom':-$('.topControl').outerHeight()}, 500);
+                    topControl.stop().animate({'bottom':-topControl.outerHeight()}, 500);
+                    volume_none.hide();
                 },3000)
             
         })
@@ -88,7 +145,7 @@ $( document ).bind(
         //转换百分比
         var perc = 100 * currentBuffer / maxduration;
         //设置缓冲进度条长度
-        $('.bufferBar').css('width', perc + '%');
+        bufferBar.css('width', perc + '%');
 
         //如果缓冲还为完成，隔0.5秒执行一次缓冲条的计算
         if (currentBuffer < maxduration) {
@@ -105,9 +162,9 @@ $( document ).bind(
         //转换百分比
         var perc = 100 * currentPos / maxduration;
         //设置播放进度条长度
-        $('.timeBar').css('width', perc + '%');
+        timeBar.css('width', perc + '%');
         //写入播放的时间
-        $('.current').text(timeFormat(currentPos));
+        current.text(timeFormat(currentPos));
     });
 
     //控件事件
@@ -116,14 +173,14 @@ $( document ).bind(
     //点击视频，播放或者暂停
     video.on('click', function() { playpause(); });
     //点击播放按钮，播放或者暂停
-    $('.btnPlay').on('click', function() { playpause(); });
+    btnPlay.on('click', function() { playpause(); });
     var playpause = function() {
         //是人都知道
         if (video[0].paused || video[0].ended) {
-            $('.btnPlay').addClass('paused');
+            btnPlay.addClass('paused');
             video[0].play();
         } else {
-            $('.btnPlay').removeClass('paused');
+            btnPlay.removeClass('paused');
             video[0].pause();
         }
     };
@@ -139,53 +196,24 @@ $( document ).bind(
     };*/
 
     //停止按钮
-    $('.btnStop').on('click', function() {
-        $('.btnPlay').removeClass('paused');
-        updatebar($('.progress').offset().left);
+    btnStop.on('click', function() {
+        btnPlay.removeClass('paused');
+        updatebar(progress.offset().left);
         video[0].pause();
     });
 
     //全屏按钮
-    $('.btnFS').on('click', function() {
-        // if($(this).hasClass("btnFSW")){
-        // 	$(this).removeClass("btnFSW");
-        // 	if($.isFunction(document.webkitCancelFullScreen)) {
-        // 		document.webkitCancelFullScreen();
-        // 	}	
-        // 	else if ($.isFunction(document.mozCancelFullScreen)) {
-        // 		document.mozCancelFullScreen();
-        // 	}
-        // 	else {
-        // 		alert('Your browsers doesn\'t support fullscreen');
-        // 	}
-        // }else{
-        // 	$(this).addClass("btnFSW");
-        // 	if($.isFunction(video[0].webkitRequestFullScreen)) {
-        // 		video[0].webkitRequestFullScreen();
-        // 	}	
-        // 	else if ($.isFunction(video[0].mozRequestFullScreen)) {
-        // 		video[0].mozRequestFullScreen();
-        // 	}
-        // 	else {
-        // 		alert('Your browsers doesn\'t support fullscreen');
-        // 	}
-        // }
+    btnFS.on('click', function() {
         //全屏
         if (document.webkitIsFullScreen) {
             //退出全屏，移出全屏class
             exitFullscreen();
-            $(".videoContainer").removeClass("videoContainer-center")
+            videoContainer.removeClass("videoContainer-center")
         } else {
             //进入全屏，添加全屏clas
             launchFullScreen(document.documentElement);
-            $(".videoContainer").addClass("videoContainer-center")
+            videoContainer.addClass("videoContainer-center")
         }
-        /*else if ($.isFunction(video[0].mozRequestFullScreen)) {
-        	video[0].mozRequestFullScreen();
-        }
-        else {
-        	alert('Your browsers doesn\'t support fullscreen');
-        }*/
 
     });
 
@@ -232,7 +260,7 @@ $( document ).bind(
                 'left': 0,
                 'z-index': 999
             });
-            $('.videoContainer').css({
+            videoContainer.css({
                 'z-index': 1000
             });
         }
@@ -243,10 +271,10 @@ $( document ).bind(
     });*/
 
     //声音按钮点击
-    $('.sound').click(function() {
+    sound.click(function() {
         //如果声音控制台没有显示，就让其显示，并跳出程序
-        if ($('.volume_none').css('display') == "none") {
-            $('.volume_none').show();
+        if (volume_none.css('display') == "none") {
+            volume_none.show();
             return false;
         }
         //是否静音，设置为true or false
@@ -254,17 +282,17 @@ $( document ).bind(
         //添加静音class
         $(this).toggleClass('muted');
         if (video[0].muted) {//非静音 设置为静音，设置音量为0
-            $('.volumeBar').css('height', 0);
-            $('.volumeT').text(0);
+            volumeBar.css('height', 0);
+            volumeT.text(0);
         } else {//是静音 设置为非静音，设置音量为当前音量
-            $('.volumeBar').css('height', video[0].volume * 100 + '%');
-            $('.volumeT').text(Math.floor(video[0].volume * 100));
+            volumeBar.css('height', video[0].volume * 100 + '%');
+            volumeT.text(Math.floor(video[0].volume * 100));
         }
     });
 
     //全屏点击，隐藏声音控件
     $("html,body").click(function() {
-        $('.volume_none').hide();
+        volume_none.hide();
     })
     //点击声音控件，阻止隐藏声音控件
     $(".volume_none,.sound").click(function(e){
@@ -274,7 +302,7 @@ $( document ).bind(
     //视频事件
     //视频canplay事件
     video.on('canplay', function() {
-        $('.loading').fadeOut(100);
+        loading.fadeOut(100);
     });
 
     //视频canplaythrough事件
@@ -286,7 +314,7 @@ $( document ).bind(
 
     //视频结束事件
     video.on('ended', function() {
-        $('.btnPlay').removeClass('paused');
+        btnPlay.removeClass('paused');
         video[0].pause();
     });
 
@@ -294,7 +322,7 @@ $( document ).bind(
     video.on('seeking', function() {
         //如果视频满载,忽略加载屏幕
         if (!completeloaded) {
-            $('.loading').fadeIn(200);
+            loading.fadeIn(200);
         }
     });
 
@@ -302,14 +330,14 @@ $( document ).bind(
 
     //视频等待更多数据的事件
     video.on('waiting', function() {
-        $('.loading').fadeIn(200);
+        loading.fadeIn(200);
     });
 
     //视频进度条
     //当视频timebar点击
     var timeDrag = false; /* 检查拖动事件 */
     //鼠标视频进度条拖动事件
-    $('.progress').on('mousedown', function(e) {
+    progress.on('mousedown', function(e) {
         timeDrag = true;
         updatebar(e.pageX);
     });
@@ -325,7 +353,7 @@ $( document ).bind(
         }
     });
     //移动端视频进度条拖动事件
-    $('.progress').on('touchstart', function(e) {
+    progress.on('touchstart', function(e) {
         timeDrag = true;
         var XX = event.targetTouches[0].pageX;
         updatebar(XX);
@@ -345,7 +373,7 @@ $( document ).bind(
 
 
     var updatebar = function(x) {
-        var progress = $('.progress');
+        //var progress = progress;
 
         //计算阻力位置
         //和更新视频currenttime
@@ -359,7 +387,7 @@ $( document ).bind(
         if (percentage < 0) {
             percentage = 0;
         }
-        $('.timeBar').css('width', percentage + '%');
+        timeBar.css('width', percentage + '%');
         video[0].currentTime = maxduration * percentage / 100;
     };
 
@@ -367,11 +395,11 @@ $( document ).bind(
     //音量控制
     var volumeDrag = false;
     //鼠标音量拖动事件
-    $('.volume').on('mousedown', function(e) {
+    volume.on('mousedown', function(e) {
         e.stopPropagation();
         volumeDrag = true;
         video[0].muted = false;
-        $('.sound').removeClass('muted');
+        sound.removeClass('muted');
         updateVolume(e.pageY);
     });
     $(document).on('mouseup', function(e) {
@@ -386,11 +414,11 @@ $( document ).bind(
         }
     });
     //移动端音量拖动事件
-    $('.volume').on('touchstart', function(e) {
+    volume.on('touchstart', function(e) {
         e.stopPropagation();
         volumeDrag = true;
         video[0].muted = false;
-        $('.sound').removeClass('muted');
+        sound.removeClass('muted');
         var XX = event.targetTouches[0].pageY;
         updateVolume(XX);
         $(document).on('touchend', function(e) {
@@ -409,7 +437,7 @@ $( document ).bind(
 
 
     var updateVolume = function(x, vol) {
-        var volume = $('.volume');
+        //var volume = volume;
         var percentage;
         //如果有传入音量
         //更新音量数量
@@ -428,16 +456,16 @@ $( document ).bind(
         }
 
         //更新进度条和视频进度
-        $('.volumeBar').css('height', percentage + '%');
+        volumeBar.css('height', percentage + '%');
         video[0].volume = percentage / 100;
-        $('.volumeT').text(Math.floor(video[0].volume * 100));
+        volumeT.text(Math.floor(video[0].volume * 100));
         //基于音量大小改变音量图标
         if (video[0].volume == 0) {
-            $('.sound').removeClass('sound2').addClass('muted');
+            sound.removeClass('sound2').addClass('muted');
         } else if (video[0].volume > 0.5) {
-            $('.sound').removeClass('muted').addClass('sound2');
+            sound.removeClass('muted').addClass('sound2');
         } else {
-            $('.sound').removeClass('muted').removeClass('sound2');
+            sound.removeClass('muted').removeClass('sound2');
         }
     };
 
@@ -447,4 +475,10 @@ $( document ).bind(
         var s = Math.floor(seconds - (m * 60)) < 10 ? "0" + Math.floor(seconds - (m * 60)) : Math.floor(seconds - (m * 60));
         return m + ":" + s;
     };
+
+}
+
+    
+
+
 });
