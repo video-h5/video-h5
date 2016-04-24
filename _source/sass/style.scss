@@ -7,7 +7,6 @@ $Response:true;
 
 /*css end*/
 
-
 /* video container */
 
 .video-js {
@@ -50,6 +49,7 @@ $Response:true;
     padding: rem-calc(11 0);
     font-size: rem-calc(20);
     @include flexbox();
+    display: flex;
     @include prefix(align-items, center);
     background: rgba(0, 0, 0, 0.3);
     color: #FFF;
@@ -123,6 +123,7 @@ $Response:true;
     border-radius: 3px;
     background: rgba(200, 200, 200, 0.6);
     @include flexboxChild(1);
+    display: flex;
     @include prefix(flex-direction, column);
     @include prefix(align-items, center);
     span {
@@ -142,6 +143,7 @@ $Response:true;
     border-radius: rem-calc(10);
     background: rgba(255, 255, 255, 0.3);
     @include flexboxChild(1);
+    flex:1;
     cursor: pointer;
 }
 
@@ -189,6 +191,7 @@ $Response:true;
     position: relative;
     height: rem-calc(10);
     @include flexboxChild(1);
+    flex:1;
     border-radius: rem-calc(10);
     background: rgba(237, 237, 228, 0.3);
     cursor: pointer;

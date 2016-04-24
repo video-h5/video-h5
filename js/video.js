@@ -18,6 +18,7 @@
             btnStop = videoParent.find('.btnStop'), //暂停按钮
             btnFS = videoParent.find('.btnFS'), //全屏按钮
             sound = videoParent.find('.sound'), //声音按钮
+            soundBox = videoParent.find('.soundBox'),
             volume_none = videoParent.find('.volume_none'), //声音条包裹div
             volumeBar = videoParent.find('.volumeBar'), //声音进度条
             volumeT = videoParent.find('.volumeT'), //当前声音大小
@@ -61,6 +62,17 @@
             videoParent.one('click', function() {
                 btnPlay.addClass('paused');
                 video[0].play();
+            });
+            videoParent.on("mouseenter", function(e) {
+                e.preventDefault();
+                Control.animate({ 'bottom': 0 }, 250);
+            });
+            videoParent.on('mouseleave', function(e) {
+                e.preventDefault();
+                if (!volumeDrag && !timeDrag) {
+                    Control.animate({ 'bottom': -Control.height() }, 250);
+                    volume_none.hide();
+                }
             });
 
             videoParent.on("touchstart touchmove", function() {
@@ -117,8 +129,11 @@
         video.on('click', function() { playpause(); });
         //点击播放按钮，播放或者暂停
         btnPlay.on('click', function() { playpause(); });
+        /**
+         * 播放或者暂停的函数
+         * @return 无 如果暂停就播放，反之播放就暂停
+         */
         var playpause = function() {
-            //是人都知道
             if (video[0].paused || video[0].ended) {
                 btnPlay.addClass('paused');
                 video[0].play();
@@ -148,13 +163,23 @@
             }
         });
 
+        /**
+         * 为音量调节绑定事件
+         */
+        soundBox.on('mouseenter', function(event) {
+            event.preventDefault();
+            touchIsSupport = "ontouchstart" in document ? true : false;
+            if (!touchIsSupport) {
+                volume_none.show();
+            }
+        });
+        soundBox.on('mouseleave', function(event) {
+            event.preventDefault();
+            volume_none.hide();
+        });
+
         //声音按钮点击
         sound.on('click', function(e) {
-            //如果声音控制台没有显示，就让其显示，并跳出程序
-            if (volume_none.css('display') == "none") {
-                volume_none.show();
-                return false;
-            }
             //是否静音，设置为true or false
             video[0].muted = !video[0].muted;
             //添加静音class
