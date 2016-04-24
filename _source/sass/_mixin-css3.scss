@@ -1,11 +1,12 @@
-//Ô²½Ç
+@charset "utf-8";
+//åœ†è§’
 @mixin borderRadius($param){
   -webkit-border-radius: $param;
   -moz-border-radius: $param;
   border-radius: $param;
 }
 
-//ÏßĞÔ½¥±ä
+//çº¿æ€§æ¸å˜
 @mixin gra($begin,$end){
   zoom: 1;
   background-image: -webkit-gradient(linear, left top, left bottom, from($begin), to($end));
@@ -17,7 +18,7 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorStr="#{ie-hex-str($begin)}", EndColorStr="#{ie-hex-str($end)}");
 }
 
-//±³¾°É«Í¸Ã÷
+//èƒŒæ™¯è‰²é€æ˜
 @mixin opacityColor($color,$trans){
   $rgba: rgba($color, $trans);
   background: $rgba;
@@ -27,25 +28,25 @@
   }
 }
 
-//png24±³¾°Í¼Æ¬
+//png24
 @mixin opacityImage($path){
   _background: none;
   _filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=noscale, src="#{$path}");
 }
 
-//IE6ÏÂÓÃgif±³¾°Í¼Æ¬
+//IE6ä¸‹ç”¨gifèƒŒæ™¯å›¾ç‰‡
 @mixin opacityGif($path){
   _background-image: url("#{$path}");
 }
 
-//±³¾°Í¼Æ¬À­Éì
+//èƒŒæ™¯å›¾ç‰‡æ‹‰ä¼¸
 @mixin stretchedImage($path){
   background-size: 100% 100%;
   filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="#{$path}", sizingMethod="scale");
   -ms-filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="#{$path}", sizingMethod="scale");
 }
 
-//Ğı×ª
+//æ—‹è½¬
 @mixin rotate($degrees){
   zoom: 1;
   //-ms-filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=#{cos($degrees)}, M12=-#{sin($degrees)}, M21=#{sin($degrees)}, M22=#{cos($degrees)});
@@ -57,7 +58,7 @@
   transform: rotate($degrees);
 }
 
-//·­×ª
+//ç¿»è½¬
 @mixin scale($x, $y){
   zoom: 1;
   -moz-transform: scale($x, $y);

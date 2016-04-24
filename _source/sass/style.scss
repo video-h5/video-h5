@@ -22,6 +22,7 @@ $Response:true;
     font-family: Arial, Helvetica, sans-serif;
     color: #fff;
     background-color: #000;
+    overflow: hidden;
     @include user-select(none);
 }
 
