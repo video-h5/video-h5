@@ -194,9 +194,15 @@
                 //进入全屏，添加全屏clas
                 videoParent.addClass("videofullscreen")
             }
-                _this.toggleFullScreen()
+            _this.toggleFullScreen()
         });
-
+        var fullscreenchange = 'fullscreenchange webkitfullscreenchange mozfullscreenchange';
+        $(document).off(fullscreenchange).on(fullscreenchange, function() {
+            //如果当前不是全屏，移出class
+            if (!_this.isInFullScreen()) {
+                $("div.videofullscreen").removeClass("videofullscreen")
+            }
+        });
         /**
          * 为音量调节绑定事件
          */
@@ -376,10 +382,8 @@
             if (window.navigator.standalone !== undefined) {
                 return !!window.navigator.standalone;
             }
-            //________________________________________________________  
-            // heuristic method  
-
-            // 5px height margin, just in case (needed by e.g. IE)  
+            // heuristic method
+            // 5px height margin, just in case (needed by e.g. IE)
             var heightMargin = 5;
             if (Ext.isWebKit && /Apple Computer/.test(navigator.vendor)) {
                 // Safari in full screen mode shows the navigation bar,which is 40px  
@@ -390,7 +394,6 @@
         /** 
          * Switch to/from fullscreen mode. 
          * Must be triggered by mouse event 
-         * 
          * @param {Boolean} b on/off fullscreen 
          */
         setFullScreen: function(b) {
@@ -412,8 +415,6 @@
                         wscript.SendKeys("{F11}");
                     }
                 }
-
-
             } else {
                 if (document.cancelFullScreen) {
                     document.cancelFullScreen();
@@ -444,13 +445,6 @@
         }
     }
     $(function() {
-        //绑定全屏改变事件
-        $(document).bind('fullscreenchange webkitfullscreenchange mozfullscreenchange', function() {
-            //如果当前不是全屏，移出class
-            if (!videos.prototype.isInFullScreen()) {
-                $(".video-js").removeClass("videofullscreen")
-            }
-        });
         $("video").each(function() {
             new videos($(this));
         });
