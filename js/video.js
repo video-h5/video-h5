@@ -5,7 +5,7 @@
         var video = obj,
             // 为video添加父级容器，并获取video父级
             videoParent = video.wrap("<div>").parent(),
-            _controlHtml = "<div class=\"topControl\">" + "<div class=\"btnPlay btn\" title=\"Play/Pause video\"></div>" + "<div class=\"time\">" + "<span class=\"current\"></span>/<span class=\"duration\"></span>" + "</div>" + "<div class=\"progress\">" + "<span class=\"bufferBar\"></span>" + "<span class=\"timeBar\"></span>" + "</div>" + "<div class=\"soundBox\">" + "<div class=\"sound sound2 btn\" title=\"Mute/Unmute sound\"></div>" + "<span class=\"volume_none\">" + "<div class=\"volume_box\">" + "<span class=\"volumeT\">100</span>" + "<div class=\"volume\" title=\"Set volume\">" + "<span class=\"volumeBar\"></span>" + "</div>" + "<span class=\"volumeB\">0</span>" + "</div>" + "</span>" + "</div>" + "<div class=\"btnFS btn\" title=\"Switch to full screen\"></div>" + "</div>" + "<div class=\"loading\"></div>";
+            _controlHtml = "<div class=\"topControl hidden\">" + "<div class=\"btnPlay\" title=\"Play/Pause video\"></div>" + "<div class=\"time\">" + "<span class=\"current\"></span>/<span class=\"duration\"></span>" + "</div>" + "<div class=\"progress\">" + "<span class=\"bufferBar\"></span>" + "<span class=\"timeBar\"></span>" + "</div>" + "<div class=\"soundBox\">" + "<div class=\"sound\" title=\"Mute/Unmute sound\"></div>" + "<span class=\"volume_none\">" + "<div class=\"volume_box\">" + "<span class=\"volumeT\">100</span>" + "<div class=\"volume\" title=\"Set volume\">" + "<span class=\"volumeBar\"></span>" + "</div>" + "<span class=\"volumeB\">0</span>" + "</div>" + "</span>" + "</div>" + "<div class=\"btnFS\" title=\"Switch to full screen\"></div>" + "</div>" + "<div class=\"loading\"></div>";
         videoParent.append(_controlHtml);
 
         var Control = videoParent.find('.topControl'), //控制条
@@ -14,37 +14,38 @@
             duration = videoParent.find('.duration'), //视频总时间
             btnPlay = videoParent.find('.btnPlay'), //播放按钮
             bufferBar = videoParent.find('.bufferBar'), //视频加载进度条
+            progress = videoParent.find('.progress'), //播放进度条包裹div
             timeBar = videoParent.find('.timeBar'), //视频播放进度条
-            btnStop = videoParent.find('.btnStop'), //暂停按钮
-            btnFS = videoParent.find('.btnFS'), //全屏按钮
             sound = videoParent.find('.sound'), //声音按钮
             soundBox = videoParent.find('.soundBox'),
             volume_none = videoParent.find('.volume_none'), //声音条包裹div
             volumeBar = videoParent.find('.volumeBar'), //声音进度条
             volumeT = videoParent.find('.volumeT'), //当前声音大小
-            progress = videoParent.find('.progress'), //播放进度条包裹div
-            volume = videoParent.find('.volume'); //声音背景条
+            volume = videoParent.find('.volume'), //声音背景条
+            btnFS = videoParent.find('.btnFS'); //全屏按钮
 
         // 将video上的属性拷贝到父级之上，并给固有的class
         videoClassName = video.attr('class');
         videoParent.addClass(videoClassName);
+
         video.attr('class', 'vjs-tech');
 
         //页面加载后移除默认的controls控件
         video.removeAttr('controls');
 
-        Control.show();
+        // 判断是否设置了自动播放
+        if (video[0].autoplay) {
+            videoParent.addClass("videoPlaying")
+            video[0].play()
+        } else {
+            videoParent.addClass("videoPaused")
+            video[0].pause()
+        }
+
         loading.show(500);
 
         // 获取元数据后绑定的事件
         video.on('loadedmetadata', function() {
-            /**
-             * 当获得元数据后3000毫秒隐藏播放控件
-             */
-            var time = setTimeout(function() {
-                Control.animate({ 'bottom': -Control.height() }, 500);
-                volume_none.hide();
-            }, 3000);
             /**
              * 设置视频属性
              * 1.设置视频开始时间
@@ -54,24 +55,31 @@
             current.text(_this.timeFormat(0));
             duration.text(_this.timeFormat(video[0].duration));
             updateVolume(0, 0.5);
-
-            //开始视频缓冲数据 
+            Control.removeClass("hidden")
+                //开始视频缓冲数据 
             setTimeout(startBuffer, 150);
 
-            //为video父元素绑定一次事件
-            videoParent.one('click', function() {
-                btnPlay.addClass('paused');
-                video[0].play();
-            });
+            /**
+             * 当获得元数据后3000毫秒隐藏播放控件
+             */
+            var time = setTimeout(function() {
+                Control.animate({ 'bottom': -Control.height() }, 500);
+                volume_none.hide();
+            }, 3000);
+
+            // 为父元素绑定鼠标和点击事件
             videoParent.on("mouseenter", function(e) {
+                clearTimeout(time);
                 e.preventDefault();
                 Control.animate({ 'bottom': 0 }, 250);
             });
             videoParent.on('mouseleave', function(e) {
                 e.preventDefault();
                 if (!volumeDrag && !timeDrag) {
-                    Control.animate({ 'bottom': -Control.height() }, 250);
-                    volume_none.hide();
+                    time = setTimeout(function() {
+                        Control.animate({ 'bottom': -Control.height() }, 250);
+                        volume_none.hide();
+                    }, 3000);
                 }
             });
 
@@ -100,7 +108,6 @@
             var perc = 100 * currentBuffer / maxduration;
             //设置缓冲进度条长度
             bufferBar.css('width', perc + '%');
-
             //如果缓冲还为完成，隔0.5秒执行一次缓冲条的计算
             if (currentBuffer < maxduration) {
                 setTimeout(startBuffer, 500);
@@ -120,89 +127,6 @@
             //写入播放的时间
             current.text(_this.timeFormat(currentPos));
         });
-
-        /**
-         * 控件事件绑定
-         */
-
-        //点击视频，播放或者暂停
-        video.on('click', function() { playpause(); });
-        //点击播放按钮，播放或者暂停
-        btnPlay.on('click', function() { playpause(); });
-        /**
-         * 播放或者暂停的函数
-         * @return 无 如果暂停就播放，反之播放就暂停
-         */
-        var playpause = function() {
-            if (video[0].paused || video[0].ended) {
-                btnPlay.addClass('paused');
-                video[0].play();
-            } else {
-                btnPlay.removeClass('paused');
-                video[0].pause();
-            }
-        };
-
-        //停止按钮
-        btnStop.on('click', function() {
-            btnPlay.removeClass('paused');
-            updatebar(progress.offset().left);
-            video[0].pause();
-        });
-
-        //全屏按钮
-        btnFS.on('click', function() {
-            if (document.webkitIsFullScreen) {
-                //退出全屏，移出全屏class
-                videoParent.removeClass("videoContainer-center")
-                _this.exitFullscreen()
-            } else {
-                //进入全屏，添加全屏clas
-                videoParent.addClass("videoContainer-center")
-                _this.launchFullScreen(document.documentElement)
-            }
-        });
-
-        /**
-         * 为音量调节绑定事件
-         */
-        soundBox.on('mouseenter', function(event) {
-            event.preventDefault();
-            touchIsSupport = "ontouchstart" in document ? true : false;
-            if (!touchIsSupport) {
-                volume_none.show();
-            }
-        });
-        soundBox.on('mouseleave', function(event) {
-            event.preventDefault();
-            volume_none.hide();
-        });
-
-        //声音按钮点击
-        sound.on('click', function(e) {
-            //是否静音，设置为true or false
-            video[0].muted = !video[0].muted;
-            //添加静音class
-            $(this).toggleClass('muted');
-            if (video[0].muted) { //非静音 设置为静音，设置音量为0
-                volumeBar.css('height', 0);
-                volumeT.text(0);
-            } else { //是静音 设置为非静音，设置音量为当前音量
-                volumeBar.css('height', video[0].volume * 100 + '%');
-                volumeT.text(Math.floor(video[0].volume * 100));
-            }
-            e.stopPropagation();
-        });
-
-        //全屏点击，隐藏声音控件
-        $("html,body").click(function() {
-            volume_none.hide();
-        });
-        //点击声音控件，阻止隐藏声音控件
-        volume_none.click(function(e) {
-            e.stopPropagation();
-        });
-
         //视频事件
         //视频canplay事件
         video.on('canplay', function() {
@@ -234,6 +158,86 @@
         video.on('waiting', function() {
             loading.show(200);
         });
+
+        /**
+         * 控件事件绑定
+         */
+
+        //点击视频，播放或者暂停
+        video.on('click', function() { playpause(); });
+        //点击播放按钮，播放或者暂停
+        btnPlay.on('click', function() { playpause(); });
+        /**
+         * 播放或者暂停的函数
+         * @return 无 如果暂停就播放，反之播放就暂停
+         */
+        var playpause = function() {
+            if (video[0].paused || video[0].ended) {
+                // btnPlay.addClass('paused');
+                videoParent.removeClass('videoPaused')
+                videoParent.addClass('videoPlaying');
+                video[0].play();
+            } else {
+                // btnPlay.removeClass('paused');
+                videoParent.addClass('videoPaused');
+                videoParent.removeClass('videoPlaying');
+                video[0].pause();
+            }
+        };
+
+        //全屏按钮
+        btnFS.on('click', function() {
+            if (_this.isInFullScreen()) {
+                //退出全屏，移出全屏class
+                videoParent.removeClass("videofullscreen")
+            } else {
+                //进入全屏，添加全屏clas
+                videoParent.addClass("videofullscreen")
+            }
+                _this.toggleFullScreen()
+        });
+
+        /**
+         * 为音量调节绑定事件
+         */
+        soundBox.on('mouseenter', function(event) {
+            event.preventDefault();
+            touchIsSupport = "ontouchstart" in document ? true : false;
+            if (!touchIsSupport) {
+                volume_none.show();
+            }
+        });
+        soundBox.on('mouseleave', function(event) {
+            event.preventDefault();
+            volume_none.hide();
+        });
+
+        //声音按钮点击
+        sound.on('click', function(event) {
+            //是否静音，设置为true or false
+            video[0].muted = !video[0].muted;
+            //添加静音class
+            $(this).toggleClass('muted');
+            if (video[0].muted) { //非静音 设置为静音，设置音量为0
+                volumeBar.css('height', 0);
+                volumeT.text(0);
+            } else { //是静音 设置为非静音，设置音量为当前音量
+                volumeBar.css('height', video[0].volume * 100 + '%');
+                volumeT.text(Math.floor(video[0].volume * 100));
+            }
+            _this.stopEventBubble(event);
+        });
+
+        //全屏点击，隐藏声音控件
+        $("html,body").click(function() {
+            volume_none.hide();
+        });
+        //点击声音控件，阻止隐藏声音控件
+        volume_none.click(function(event) {
+            _this.stopEventBubble(event);
+        });
+
+
 
         //视频进度条
         //当视频timebar点击
@@ -282,7 +286,7 @@
         var volumeDrag = false,
             volumevalue;
         volume.on(_touchstart, function(e) {
-            e.stopPropagation();
+            _this.stopEventBubble(e);
             volumeDrag = true;
             video[0].muted = false;
             sound.removeClass('muted');
@@ -325,11 +329,9 @@
             volumeT.text(Math.floor(video[0].volume * 100));
             //基于音量大小改变音量图标
             if (video[0].volume == 0) {
-                sound.removeClass('sound2').addClass('muted');
-            } else if (video[0].volume > 0.5) {
-                sound.removeClass('muted').addClass('sound2');
+                sound.addClass('muted');
             } else {
-                sound.removeClass('muted').removeClass('sound2');
+                sound.removeClass('muted');
             }
         };
 
@@ -346,39 +348,107 @@
             return m + ":" + s;
         },
         /**
-         * 检测设备是否支持浏览器的全屏时间，如果支持就执行全屏事件
-         * @param  {html元素} element 传入调用全屏的元素
+         * 阻止事件冒泡
+         * @param  {对象} event 事件执行后返回的事件对象
+         * @return {无}       没有明确指出返回值
          */
-        launchFullScreen: function(element) {
-            if (element.requestFullscreen) {
-                element.requestFullscreen();
-            } else if (element.mozRequestFullScreen) {
-                element.mozRequestFullScreen();
-            } else if (element.webkitRequestFullscreen) {
-                element.webkitRequestFullscreen();
-            } else if (element.msRequestFullscreen) {
-                element.msRequestFullscreen();
+        stopEventBubble: function(event) {
+            var e = event || window.event;
+            if (e && e.stopPropagation) {
+                e.stopPropagation();
+            } else {
+                e.cancelBubble = true;
             }
         },
-        /**
-         * 退出全屏
-         */
-        exitFullscreen: function() {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.mozExitFullScreen) {
-                document.mozExitFullScreen();
-            } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
+        isInFullScreen: function() {
+            if (document.fullScreenElement !== undefined) {
+                return !!document.fullScreenElement;
             }
+            if (document.mozFullScreen !== undefined) {
+                return !!document.mozFullScreen;
+            }
+            if (document.webkitIsFullScreen !== undefined) {
+                return !!document.webkitIsFullScreen;
+            }
+            if (window['fullScreen'] !== undefined) {
+                return !!window.fullScreen;
+            }
+            if (window.navigator.standalone !== undefined) {
+                return !!window.navigator.standalone;
+            }
+            //________________________________________________________  
+            // heuristic method  
+
+            // 5px height margin, just in case (needed by e.g. IE)  
+            var heightMargin = 5;
+            if (Ext.isWebKit && /Apple Computer/.test(navigator.vendor)) {
+                // Safari in full screen mode shows the navigation bar,which is 40px  
+                heightMargin = 42;
+            }
+            return screen.width == window.innerWidth && Math.abs(screen.height - window.innerHeight) < heightMargin;
+        },
+        /** 
+         * Switch to/from fullscreen mode. 
+         * Must be triggered by mouse event 
+         * 
+         * @param {Boolean} b on/off fullscreen 
+         */
+        setFullScreen: function(b) {
+            if (b) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.body.requestFullscreen) {
+                    document.body.requestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) {
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+                } else if (document.body.webkitRequestFullScreen) {
+                    document.body.webkitRequestFullScreen();
+                } else if (typeof window.ActiveXObject != "undefined") {
+                    // for Internet Explorer  
+                    var wscript = new ActiveXObject("WScript.Shell");
+                    if (wscript != null) {
+                        wscript.SendKeys("{F11}");
+                    }
+                }
+
+
+            } else {
+                if (document.cancelFullScreen) {
+                    document.cancelFullScreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitCancelFullScreen) {
+                    document.webkitCancelFullScreen();
+                } else if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (typeof window.ActiveXObject != "undefined") {
+                    // for Internet Explorer
+                    var wscript = new ActiveXObject("WScript.Shell");
+                    if (wscript != null) {
+                        wscript.SendKeys("{F11}");
+                    }
+                }
+            }
+        },
+
+        /** 
+         * Toggle full screen mode. 
+         * @return {Boolean} the new full-screen mode 
+         */
+        toggleFullScreen: function() {
+            var isInFullScreen = this.isInFullScreen();
+            this.setFullScreen(!isInFullScreen);
+            return this.isInFullScreen();
         }
     }
     $(function() {
         //绑定全屏改变事件
         $(document).bind('fullscreenchange webkitfullscreenchange mozfullscreenchange', function() {
             //如果当前不是全屏，移出class
-            if (!document.webkitIsFullScreen) {
-                $(".videoContainer").removeClass("videoContainer-center")
+            if (!videos.prototype.isInFullScreen()) {
+                $(".video-js").removeClass("videofullscreen")
             }
         });
         $("video").each(function() {

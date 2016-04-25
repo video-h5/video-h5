@@ -8,7 +8,10 @@ $Response:true;
 /*css end*/
 
 /* video container */
-
+%control_btn{
+	position: relative;
+	cursor: pointer;
+}
 .video-js {
     position: relative;
     display: block;
@@ -23,6 +26,28 @@ $Response:true;
     background-color: #000;
     overflow: hidden;
     @include user-select(none);
+    .btnPlay {
+    	@extend %control_btn;
+        width: rem-calc(34);
+        height: rem-calc(30);
+        margin: rem-calc(0 20 0 25);
+    }
+}
+// 暂停状态的样式
+.videoPaused{
+	.btnPlay {
+	    background: image-url("control.png") no-repeat 0 0;
+	    background-size: rem-calc(132 90);
+	    background-position: 0 0;
+	}
+}
+// 播放状态时的样式
+.videoPlaying{
+	.btnPlay{
+		background: image-url("control.png") no-repeat;
+		background-size: rem-calc(132 90);
+		background-position: rem-calc(0 -30);
+	}
 }
 
 .vjs-default-skin {
@@ -54,26 +79,8 @@ $Response:true;
     background: rgba(0, 0, 0, 0.3);
     color: #FFF;
 }
-
-.btn {
-    position: relative;
-    width: rem-calc(34);
-    height: rem-calc(30);
-    cursor: pointer;
-}
-
-.btnPlay {
-    margin: rem-calc(0 20 0 25);
-    background: image-url("control.png") no-repeat 0 0;
-    background-size: rem-calc(132 90);
-    background-position: 0 0;
-}
-
-.paused {
-    margin: rem-calc(0 20 0 25);
-    background: image-url("control.png") no-repeat;
-    background-size: rem-calc(132 90);
-    background-position: rem-calc(0 -30);
+.hidden{
+	visibility: hidden;
 }
 
 .soundBox {
@@ -85,6 +92,9 @@ $Response:true;
 }
 
 .sound {
+	@extend %control_btn;
+	width: rem-calc(34);
+	height: rem-calc(30);
     background: image-url("control.png") no-repeat;
     background-size: rem-calc(132 90);
     background-position: rem-calc(-88 -30);
@@ -103,6 +113,9 @@ $Response:true;
 }
 
 .btnFS {
+	@extend %control_btn;
+	width: rem-calc(34);
+	height: rem-calc(30);
     margin-right: rem-calc(20);
     background: image-url("control.png") no-repeat;
     background-size: rem-calc(132 90);
