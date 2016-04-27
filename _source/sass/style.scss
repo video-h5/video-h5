@@ -125,7 +125,7 @@ $Response:true;
     margin-left: rem-calc(-29);
     border-radius: 3px;
     background: rgba(200, 200, 200, 0.6);
-    @include flexboxChild(1);
+    @include flex(1);
     @include align-items(center);
     @include prefix(flex-direction, column);
     span {
@@ -144,7 +144,7 @@ $Response:true;
     width: rem-calc(10);
     border-radius: rem-calc(10);
     background: rgba(255, 255, 255, 0.3);
-    @include flexboxChild(1);
+    @include flex(1);
     cursor: pointer;
 }
 
@@ -191,7 +191,7 @@ $Response:true;
 .progress {
     position: relative;
     height: rem-calc(10);
-    @include flexboxChild(1);
+    @include flex(1);
     border-radius: rem-calc(10);
     background: rgba(237, 237, 228, 0.3);
     cursor: pointer;
