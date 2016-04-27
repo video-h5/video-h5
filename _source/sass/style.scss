@@ -51,12 +51,22 @@ $Response:true;
 .vjs-tech {
     position: absolute;
     top: 0;
+    width: 100%!important;
+    height: 100%!important;
 }
 
 
 /* video caption css */
 
-.caption {}
+.caption {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: image-url("loading.gif") no-repeat 50% 50%;
+    z-index: 2;
+}
 
 .topControl {
     position: absolute;
@@ -79,8 +89,6 @@ $Response:true;
 
 .soundBox {
     position: relative;
-    width: rem-calc(34);
-    height: rem-calc(30);
     margin: rem-calc(0 20);
     cursor: pointer;
 }
@@ -108,7 +116,7 @@ $Response:true;
 }
 .volume_box {
     position: absolute;
-    bottom: rem-calc(30);
+    bottom: rem-calc(40);
     left: 50%;
     width: rem-calc(58);
     height: rem-calc(180);
@@ -222,23 +230,21 @@ $Response:true;
 }
 
 
-/* OTHERS CSS */
+// 全屏模式
+.videofullscreen{
+    .vjs-tech{
+        position: fixed;
+        z-index: 99;
+        background: #000;
+    }
+    .topControl{
+        position: fixed;
+        z-index: 100;
+    }
+}
 
+/* OTHERS CSS */
 
 /* video screen cover */
 
-.loading, #init {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: image-url("loading.gif") no-repeat 50% 50%;
-    z-index: 2;
-    display: none;
-}
 
-#init {
-    background: image-url("bigplay.png") no-repeat 50% 50% !important;
-    cursor: pointer;
-}
