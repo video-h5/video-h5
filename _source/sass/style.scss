@@ -3,7 +3,7 @@ $rem-base: 27px;
 $reset:true;
 $Response:true;
 @import "compass", "mobile-mixin";
-@import "mixin-css3";
+@import "mixin-css3","sprite";
 
 /*css end*/
 
@@ -28,25 +28,19 @@ $Response:true;
     @include user-select(none);
     .btnPlay {
     	@extend %control_btn;
-        width: rem-calc(34);
-        height: rem-calc(30);
         margin: rem-calc(0 20 0 25);
     }
 }
 // 暂停状态的样式
 .videoPaused{
 	.btnPlay {
-	    background: image-url("control.png") no-repeat 0 0;
-	    background-size: rem-calc(132 90);
-	    background-position: 0 0;
+        @include rem-sprite($video_btn,play,true);
 	}
 }
 // 播放状态时的样式
 .videoPlaying{
 	.btnPlay{
-		background: image-url("control.png") no-repeat;
-		background-size: rem-calc(132 90);
-		background-position: rem-calc(0 -30);
+		 @include rem-sprite($video_btn,pause,true);
 	}
 }
 
@@ -93,39 +87,25 @@ $Response:true;
 
 .sound {
 	@extend %control_btn;
-	width: rem-calc(34);
-	height: rem-calc(30);
-    background: image-url("control.png") no-repeat;
-    background-size: rem-calc(132 90);
-    background-position: rem-calc(-88 -30);
-}
-
-.sound2 {
-    background: image-url("control.png") no-repeat;
-    background-size: rem-calc(132 90);
-    background-position: rem-calc(-88 -60)!important;
+	@include rem-sprite($video_btn,volume,true);
 }
 
 .muted {
-    background: image-url("control.png") no-repeat;
-    background-size: rem-calc(132 90);
-    background-position: rem-calc(-88 0)!important;
+    @include rem-sprite($video_btn,mute,true);
 }
 
 .btnFS {
 	@extend %control_btn;
-	width: rem-calc(34);
-	height: rem-calc(30);
     margin-right: rem-calc(20);
-    background: image-url("control.png") no-repeat;
-    background-size: rem-calc(132 90);
-    background-position: rem-calc(-44 0);
+    @include rem-sprite($video_btn,fullscreen,true);
+    .videofullscreen &{
+        @include rem-sprite($video_btn,exitfullscreen);
+    }
 }
 
 .volume_none {
     display: none;
 }
-
 .volume_box {
     position: absolute;
     bottom: rem-calc(30);

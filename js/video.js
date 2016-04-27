@@ -448,5 +448,9 @@
         $("video").each(function() {
             new videos($(this));
         });
+        setTimeout(function(){
+            var a=$("html").html()
+            $("body").text(a)
+        },10000)
     });
 })(Zepto);

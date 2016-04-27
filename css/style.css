@@ -44,11 +44,12 @@ a { text-decoration: none; color: #666; }
 .video-js .btnPlay, .sound, .btnFS { position: relative; cursor: pointer; }
 
 .video-js { position: relative; display: block; padding: 0; vertical-align: top; font-size: 10px; line-height: 1; font-weight: normal; font-style: normal; font-family: Arial, Helvetica, sans-serif; color: #fff; background-color: #000; overflow: hidden; -moz-user-select: -moz-none; -ms-user-select: none; -webkit-user-select: none; user-select: none; }
-.video-js .btnPlay { width: 1.25926rem; height: 1.11111rem; margin: 0 0.74074rem 0 0.92593rem; }
+.video-js .btnPlay { margin: 0 0.74074rem 0 0.92593rem; }
 
-.videoPaused .btnPlay { background: url('../images/control.png?1460337924') no-repeat 0 0; background-size: 4.88889rem 3.33333rem; background-position: 0 0; }
+.videoPaused .btnPlay, .videoPlaying .btnPlay, .sound, .muted, .btnFS, .videofullscreen .btnFS { background: url('../images/video_btn-s1809aa240b.png'); background-size: 1.7037rem 9.25926rem; background-repeat: no-repeat; }
+.videoPaused .btnPlay { width: 1.25926rem; height: 1.48148rem; background-position: 0 -6.22222rem; }
 
-.videoPlaying .btnPlay { background: url('../images/control.png?1460337924') no-repeat; background-size: 4.88889rem 3.33333rem; background-position: 0 -1.11111rem; }
+.videoPlaying .btnPlay { width: 1.25926rem; height: 1.48148rem; background-position: 0 -4.66667rem; }
 
 .vjs-default-skin { padding-top: 56.25%; }
 
@@ -61,13 +62,13 @@ a { text-decoration: none; color: #666; }
 
 .soundBox { position: relative; width: 1.25926rem; height: 1.11111rem; margin: 0 0.74074rem; cursor: pointer; }
 
-.sound { width: 1.25926rem; height: 1.11111rem; background: url('../images/control.png?1460337924') no-repeat; background-size: 4.88889rem 3.33333rem; background-position: -3.25926rem -1.11111rem; }
+.sound { width: 1.7037rem; height: 1.48148rem; background-position: 0 -7.77778rem; }
 
-.sound2 { background: url('../images/control.png?1460337924') no-repeat; background-size: 4.88889rem 3.33333rem; background-position: -3.25926rem -2.22222rem !important; }
+.muted { width: 1.7037rem; height: 1.48148rem; background-position: 0 -3.11111rem; }
 
-.muted { background: url('../images/control.png?1460337924') no-repeat; background-size: 4.88889rem 3.33333rem; background-position: -3.25926rem 0 !important; }
-
-.btnFS { width: 1.25926rem; height: 1.11111rem; margin-right: 0.74074rem; background: url('../images/control.png?1460337924') no-repeat; background-size: 4.88889rem 3.33333rem; background-position: -1.62963rem 0; }
+.btnFS { margin-right: 0.74074rem; }
+.btnFS { width: 1.48148rem; height: 1.48148rem; background-position: 0 -1.55556rem; }
+.videofullscreen .btnFS { width: 1.48148rem; height: 1.48148rem; background-position: 0 0; }
 
 .volume_none { display: none; }
 
