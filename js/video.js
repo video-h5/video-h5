@@ -42,7 +42,6 @@
             video[0].pause()
         }
         caption.show();
-        // debugger;
 
         // 获取元数据后绑定的事件
         video.on('loadedmetadata', function() {
@@ -53,19 +52,23 @@
              * 3.设置默认声音音量
              */
             current.text(_this.timeFormat(0));
-            duration.text(_this.timeFormat(video[0].duration));
+            if (video[0].duration > 1) {
+                duration.text(_this.timeFormat(video[0].duration));
+            }else{
+                duration.text(_this.timeFormat(0));
+            }
             updateVolume(0, 0.5);
             Control.removeClass("hidden")
-            //开始视频缓冲数据 
+                //开始视频缓冲数据 
             setTimeout(startBuffer, 150);
 
             /**
              * 当获得元数据后3000毫秒隐藏播放控件
              */
             var time = setTimeout(function() {
-                Control.animate({ 'bottom': -Control.height() }, 500);
+                Control.animate({ 'bottom': -Control.height() }, 250);
                 volume_none.hide();
-            }, 3000);
+            }, 5000);
 
             // 为父元素绑定鼠标和点击事件
             videoParent.on("mouseenter", function(e) {
@@ -79,19 +82,19 @@
                     time = setTimeout(function() {
                         Control.animate({ 'bottom': -Control.height() }, 250);
                         volume_none.hide();
-                    }, 3000);
+                    }, 5000);
                 }
             });
 
             videoParent.on("touchstart touchmove", function() {
                 clearTimeout(time);
-                Control.animate({ 'bottom': 0 }, 500);
+                Control.animate({ 'bottom': 0 }, 250);
             });
 
             videoParent.on("touchend touchcancel", function() {
                 clearTimeout(time);
                 time = setTimeout(function() {
-                    Control.animate({ 'bottom': -Control.height() }, 500);
+                    Control.animate({ 'bottom': -Control.height() }, 250);
                     volume_none.hide();
                 }, 3000);
 
@@ -119,7 +122,6 @@
         //视频canplay事件
         video.on('canplay', function() {
             caption.hide(100);
-            
         });
 
         //视频canplaythrough事件
@@ -127,8 +129,9 @@
         var completeloaded = false;
         video.on('canplaythrough', function() {
             completeloaded = true;
+
         });
-       
+
 
         //显示当前视频播放时间
         video.on('timeupdate', function() {
@@ -142,6 +145,9 @@
             timeBar.css('width', perc + '%');
             //写入播放的时间
             current.text(_this.timeFormat(currentPos));
+            if (duration.text() == _this.timeFormat(0) && video[0].duration > 1) {
+                duration.text(_this.timeFormat(video[0].duration));
+            }
         });
 
 
@@ -167,13 +173,13 @@
         /**
          * 控件事件绑定
          */
-         var _touchstart = "ontouchstart" in document ? "touchstart" : "mousedown",
-             _touchmove = "ontouchmove" in document ? "touchmove" : "mousemove",
-             _touchend = "ontouchend" in document ? "touchend" : "mouseup";
+        var _touchstart = "ontouchstart" in document ? "touchstart" : "mousedown",
+            _touchmove = "ontouchmove" in document ? "touchmove" : "mousemove",
+            _touchend = "ontouchend" in document ? "touchend" : "mouseup";
 
         //点击视频，播放或者暂停
         video.on('click', function() {
-            if (_this.isInFullScreen()) return;
+            if (_this.isInFullScreen() || videoParent.hasClass('videofullscreen')) return;
             playpause();
         });
         //点击播放按钮，播放或者暂停
@@ -226,11 +232,11 @@
         });
 
         //全屏点击，隐藏声音控件
-        $("html,body").on("click",function() {
+        $("html,body").on("click", function() {
             volume_none.hide();
         });
         //点击声音控件，阻止隐藏声音控件
-        volume_none.on("click",function(event) {
+        volume_none.on("click", function(event) {
             _this.stopEventBubble(event);
         });
 
@@ -328,17 +334,21 @@
         };
 
         //全屏按钮
-        var i=0;
         btnFS.on(_touchstart, function() {
-            $(".text").text(i++)
             if (_this.isInFullScreen()) {
                 //退出全屏，移出全屏class
                 videoParent.removeClass("videofullscreen")
             } else {
                 //进入全屏，添加全屏clas
-                videoParent.addClass("videofullscreen")
+                if (videoParent.hasClass('videofullscreen')) {
+                    videoParent.removeClass("videofullscreen")
+                    Control.css('bottom', '0px');
+                } else {
+                    videoParent.addClass("videofullscreen")
+                }
             }
             _this.toggleFullScreen()
+            $(".text").text(i++)
         });
         var fullscreenchange = 'fullscreenchange webkitfullscreenchange mozfullscreenchange';
         $(document).off(fullscreenchange).on(fullscreenchange, function() {
@@ -374,6 +384,7 @@
             }
         },
         isInFullScreen: function() {
+
             if (document.fullScreenElement !== undefined) {
                 return !!document.fullScreenElement;
             }
@@ -389,10 +400,12 @@
             if (window.navigator.standalone !== undefined) {
                 return !!window.navigator.standalone;
             }
+
             // heuristic method
             // 5px height margin, just in case (needed by e.g. IE)
             var heightMargin = 5;
-            if (Ext.isWebKit && /Apple Computer/.test(navigator.vendor)) {
+            var u = navigator.userAgent;
+            if (u.indexOf('AppleWebKit') > -1 && /Apple Computer/.test(navigator.vendor)) {
                 // Safari in full screen mode shows the navigation bar,which is 40px  
                 heightMargin = 42;
             }

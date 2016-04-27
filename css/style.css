@@ -56,7 +56,7 @@ a { text-decoration: none; color: #666; }
 .vjs-tech { position: absolute; top: 0; width: 100% !important; height: 100% !important; }
 
 /* video caption css */
-.caption { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('../images/loading.gif?1460337924') no-repeat 50% 50%; z-index: 2; }
+.caption { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: -webkit-box; display: -moz-box; display: -ms-flexbox; display: box; box-orient: horizontal; display: flex; -webkit-box-align: center; -ms-align-items: center; -o-align-items: center; -moz-align-items: center; -webkit-align-items: center; align-items: center; justify-content: center; background: url('../images/loading.gif?1460337924') no-repeat 50% 50%; z-index: 2; }
 
 .topControl { position: absolute; z-index: 9; bottom: 0; left: 0; width: 100%; height: 1.40741rem; padding: 0.40741rem 0; font-size: 0.74074rem; display: -webkit-box; display: -moz-box; display: -ms-flexbox; display: box; box-orient: horizontal; display: flex; -ms-align-items: center; -o-align-items: center; -moz-align-items: center; -webkit-align-items: center; align-items: center; background: rgba(0, 0, 0, 0.3); color: #FFF; }
 
