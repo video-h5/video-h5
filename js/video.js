@@ -54,7 +54,7 @@
             current.text(_this.timeFormat(0));
             if (video[0].duration > 1) {
                 duration.text(_this.timeFormat(video[0].duration));
-            }else{
+            } else {
                 duration.text(_this.timeFormat(0));
             }
             updateVolume(0, 0.5);
@@ -134,7 +134,7 @@
 
 
         //显示当前视频播放时间
-        video.on("timeupdate", function () {
+        video.on("timeupdate", function() {
             //获取视频播放的当前时间位置
             var currentPos = video[0].currentTime;
             //获取视频总时间
@@ -181,47 +181,61 @@
         //点击视频，播放或者暂停
         video.on(_touchstart, function(e) {
             if (_this.isInFullScreen() || videoParent.hasClass('videofullscreen')) return;
-            playpause();
+            _this.togglePlay();
         });
         //点击播放按钮，播放或者暂停
-        btnPlay.on(_touchstart, function() { playpause(); });
+        btnPlay.on(_touchstart, function() { _this.togglePlay(); });
         /**
          * 播放或者暂停的函数
          * @return 无 如果暂停就播放，反之播放就暂停
          */
-        var playpause = function() {
+        this.togglePlay = function() {
             if (video[0].paused || video[0].ended) {
-                videoParent.removeClass('videoPaused')
-                videoParent.addClass('videoPlaying');
-                video[0].play();
+                _this.play();
             } else {
-                videoParent.addClass('videoPaused');
-                videoParent.removeClass('videoPlaying');
-                video[0].pause();
+                _this.pause();
             }
         };
+        this.play = function() {
+            videoParent.removeClass('videoPaused')
+            videoParent.addClass('videoPlaying');
+            video[0].play();
+        };
+        this.pause = function() {
+            videoParent.addClass('videoPaused');
+            videoParent.removeClass('videoPlaying');
+            video[0].pause();
+        };
 
- 
+
         //视频进度条
         //当视频timebar点击
         var timeDrag = false, // 检查拖动事件
-            timevalue;
+            timevalue,
+            ispaused = null;
         //鼠标视频进度条拖动事件
         progress.on(_touchstart, function(e) {
             timeDrag = true;
             timevalue = e.pageX || event.targetTouches[0].pageX;
             updatebar(timevalue);
+            ispaused = video[0].paused;
+            if (!video[0].paused) {
+                video[0].pause()
+            }
         });
         $(document).on(_touchmove, function(e) {
             if (timeDrag) {
                 timevalue = e.pageX || event.targetTouches[0].pageX;
-                $(".text").text(timevalue+""+timeDrag)
+                $(".text").text(timevalue + "" + timeDrag)
                 updatebar(timevalue);
             }
         });
         $(document).on(_touchend, function() {
             if (timeDrag) {
                 updatebar(timevalue);
+                if (!ispaused) {
+                    video[0].play();
+                }
                 timeDrag = false;
             }
         });
@@ -359,7 +373,6 @@
                 }
             }
             _this.toggleFullScreen()
-            $(".text").text(i++)
         });
         var fullscreenchange = 'fullscreenchange webkitfullscreenchange mozfullscreenchange';
         $(document).off(fullscreenchange).on(fullscreenchange, function() {
@@ -479,9 +492,5 @@
         $("video").each(function() {
             new videos($(this));
         });
-        // setTimeout(function(){
-        //     var a=$("html").html()
-        //     $("body").text(a)
-        // },10000)
     });
 })(Zepto);

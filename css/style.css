@@ -1,6 +1,5 @@
-@charset "utf-8";
 html { overflow-y: scroll; -webkit-text-size-adjust: 100%; }
-html * { -webkit-tap-highlight-color: transparent; -webkit-tap-highlight-color: transparent; }
+html * { -webkit-tap-highlight-color: transparent; }
 
 html, body { font-family: sans-serif; }
 
@@ -51,13 +50,13 @@ a { text-decoration: none; color: #666; }
 
 .videoPlaying .btnPlay { width: 1.62963rem; height: 1.62963rem; background-position: 0 -5.11111rem; }
 
-.vjs-default-skin { padding-top: 56.25%; }
+div.vjs-default-skin { padding-top: 56.25%; }
 
 .vjs-tech { position: absolute; top: 0; width: 100% !important; height: 100% !important; }
 
 /* video caption css */
 .caption { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: -moz-box; display: -webkit-box; display: -webkit-flex; display: flex; -moz-box-align: center; -webkit-box-align: center; -webkit-align-items: center; align-items: center; -moz-box-pack: center; -webkit-box-pack: center; -webkit-justify-content: center; justify-content: center; -moz-box-orient: vertical; -webkit-box-orient: vertical; -webkit-flex-direction: column; flex-direction: column; z-index: 2; }
-.caption .caption_media { width: 2rem; height: 2.03704rem; background: url('../images/loading.gif?1460337924') no-repeat 50% 50%; background-size: contain; }
+.caption .caption_media { width: 2rem; height: 2.03704rem; background: url('../images/loading.gif?1460387386') no-repeat 50% 50%; background-size: contain; }
 .caption .caption_text { margin-top: 0.74074rem; }
 
 .topControl { position: absolute; z-index: 9; bottom: 0; left: 0; width: 100%; height: 1.85185rem; padding: 0.2963rem 0; font-size: 0.74074rem; display: -moz-box; display: -webkit-box; display: -webkit-flex; display: flex; -moz-box-align: center; -webkit-box-align: center; -webkit-align-items: center; align-items: center; background: rgba(0, 0, 0, 0.3); color: #FFF; }
