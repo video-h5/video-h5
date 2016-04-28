@@ -12,6 +12,7 @@ $Response:true;
 	position: relative;
 	cursor: pointer;
 }
+
 .video-js {
     position: relative;
     display: block;
@@ -64,12 +65,22 @@ $Response:true;
     left: 0;
     width: 100%;
     height: 100%;
-    @include flexbox();
+    @include display-flex(flex);
     @include align-items(center);
-    justify-content: center;
-    background: image-url("loading.gif") no-repeat 50% 50%;
+    @include justify-content(center);
+    @include flex-direction(column);
     z-index: 2;
+    .caption_media{
+        width: rem-calc(54);
+        height: rem-calc(55);
+        background: image-url("loading.gif") no-repeat 50% 50%;
+        background-size: contain;
+    }
+    .caption_text{
+        margin-top: rem-calc(20);
+    }
 }
+
 
 .topControl {
     position: absolute;
@@ -77,10 +88,10 @@ $Response:true;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: rem-calc(38);
-    padding: rem-calc(11 0);
+    height: rem-calc(50);
+    padding: rem-calc(8 0);
     font-size: rem-calc(20);
-    @include flexbox();
+    @include display-flex(flex);
     @include align-items(center);
     background: rgba(0, 0, 0, 0.3);
     color: #FFF;
@@ -125,9 +136,10 @@ $Response:true;
     margin-left: rem-calc(-29);
     border-radius: 3px;
     background: rgba(200, 200, 200, 0.6);
+    @include display-flex(flex);
+    @include flex-direction(column);
     @include flex(1);
     @include align-items(center);
-    @include prefix(flex-direction, column);
     span {
         display: block;
     }

@@ -5,7 +5,7 @@
         var video = obj,
             // 为video添加父级容器，并获取video父级
             videoParent = video.wrap("<div>").parent(),
-            _controlHtml = "<div class=\"topControl hidden\">" + "<div class=\"btnPlay\" title=\"Play/Pause video\"></div>" + "<div class=\"time\">" + "<span class=\"current\"></span>/<span class=\"duration\"></span>" + "</div>" + "<div class=\"progress\">" + "<span class=\"bufferBar\"></span>" + "<span class=\"timeBar\"></span>" + "</div>" + "<div class=\"soundBox\">" + "<div class=\"sound\" title=\"Mute/Unmute sound\"></div>" + "<span class=\"volume_none\">" + "<div class=\"volume_box\">" + "<span class=\"volumeT\">100</span>" + "<div class=\"volume\" title=\"Set volume\">" + "<span class=\"volumeBar\"></span>" + "</div>" + "<span class=\"volumeB\">0</span>" + "</div>" + "</span>" + "</div>" + "<div class=\"btnFS\" title=\"Switch to full screen\"></div>" + "</div>" + "<div class=\"caption\"><div class=\"caption_text\">正在加载，请稍等…</div></div>";
+            _controlHtml = "<div class=\"topControl hidden\">" + "<div class=\"btnPlay\" title=\"Play/Pause video\"></div>" + "<div class=\"time\">" + "<span class=\"current\"></span>/<span class=\"duration\"></span>" + "</div>" + "<div class=\"progress\">" + "<span class=\"bufferBar\"></span>" + "<span class=\"timeBar\"></span>" + "</div>" + "<div class=\"soundBox\">" + "<div class=\"sound\" title=\"Mute/Unmute sound\"></div>" + "<span class=\"volume_none\">" + "<div class=\"volume_box\">" + "<span class=\"volumeT\">100</span>" + "<div class=\"volume\" title=\"Set volume\">" + "<span class=\"volumeBar\"></span>" + "</div>" + "<span class=\"volumeB\">0</span>" + "</div>" + "</span>" + "</div>" + "<div class=\"btnFS\" title=\"Switch to full screen\"></div>" + "</div>" + "<div class=\"caption\"><div class=\"caption_media\"></div><div class=\"caption_text\">正在加载，请稍等…</div></div>";
         videoParent.append(_controlHtml);
 
         var Control = videoParent.find('.topControl'), //控制条
@@ -134,7 +134,7 @@
 
 
         //显示当前视频播放时间
-        video.on('timeupdate', function() {
+        video[0].addEventListener("timeupdate", function () {
             //获取视频播放的当前时间位置
             var currentPos = video[0].currentTime;
             //获取视频总时间
@@ -144,7 +144,8 @@
             //设置播放进度条长度
             timeBar.css('width', perc + '%');
             //写入播放的时间
-            current.text(_this.timeFormat(currentPos));
+            $(".text").text(currentPos)
+            current.html(_this.timeFormat(currentPos));
             if (duration.text() == _this.timeFormat(0) && video[0].duration > 1) {
                 duration.text(_this.timeFormat(video[0].duration));
             }
@@ -178,7 +179,7 @@
             _touchend = "ontouchend" in document ? "touchend" : "mouseup";
 
         //点击视频，播放或者暂停
-        video.on('click', function() {
+        video.on(_touchstart, function(e) {
             if (_this.isInFullScreen() || videoParent.hasClass('videofullscreen')) return;
             playpause();
         });
@@ -199,6 +200,53 @@
                 video[0].pause();
             }
         };
+
+ 
+        //视频进度条
+        //当视频timebar点击
+        var timeDrag = false, // 检查拖动事件
+            timevalue;
+        //鼠标视频进度条拖动事件
+        progress.on(_touchstart, function(e) {
+            timeDrag = true;
+            timevalue = e.pageX || event.targetTouches[0].pageX;
+            updatebar(timevalue);
+        });
+        $(document).on(_touchmove, function(e) {
+            if (timeDrag) {
+                timevalue = e.pageX || event.targetTouches[0].pageX;
+                $(".text").text(timevalue+""+timeDrag)
+                updatebar(timevalue);
+            }
+        });
+        $(document).on(_touchend, function() {
+            if (timeDrag) {
+                updatebar(timevalue);
+                timeDrag = false;
+            }
+        });
+        /**
+         * 进度条函数
+         * @param  {number} x 鼠标或者手指当前坐标位置
+         */
+        var updatebar = function(x) {
+            //计算阻力位置
+            //和更新视频currenttime
+            //进度条
+            var maxduration = video[0].duration;
+            var position = x - progress.offset().left;
+            var percentage = 100 * position / progress.width();
+            if (percentage > 100) {
+                percentage = 100;
+            }
+            if (percentage < 0) {
+                percentage = 0;
+            }
+            timeBar.css('width', percentage + '%');
+            video[0].currentTime = maxduration * percentage / 100;
+            current.text(_this.timeFormat(video[0].currentTime));
+        };
+
 
         /**
          * 为音量调节绑定事件
@@ -232,53 +280,13 @@
         });
 
         //全屏点击，隐藏声音控件
-        $("html,body").on("click", function() {
+        $("html,body").on(_touchstart, function() {
             volume_none.hide();
         });
         //点击声音控件，阻止隐藏声音控件
-        volume_none.on("click", function(event) {
+        volume_none.on(_touchstart, function(event) {
             _this.stopEventBubble(event);
         });
-
-        //视频进度条
-        //当视频timebar点击
-        var timeDrag = false, // 检查拖动事件
-            timevalue;
-        //鼠标视频进度条拖动事件
-        progress.on(_touchstart, function(e) {
-            timeDrag = true;
-            timevalue = e.pageX || event.targetTouches[0].pageX;
-            updatebar(timevalue);
-        });
-        $(document).on(_touchmove, function(e) {
-            timevalue = e.pageX || event.targetTouches[0].pageX;
-            if (timeDrag) {
-                updatebar(timevalue);
-            }
-        });
-        $(document).on(_touchend, function() {
-            if (timeDrag) timeDrag = false;;
-        });
-        /**
-         * 进度条函数
-         * @param  {number} x 鼠标或者手指当前坐标位置
-         */
-        var updatebar = function(x) {
-            //计算阻力位置
-            //和更新视频currenttime
-            //进度条
-            var maxduration = video[0].duration;
-            var position = x - progress.offset().left;
-            var percentage = 100 * position / progress.width();
-            if (percentage > 100) {
-                percentage = 100;
-            }
-            if (percentage < 0) {
-                percentage = 0;
-            }
-            timeBar.css('width', percentage + '%');
-            video[0].currentTime = maxduration * percentage / 100;
-        };
 
         //音量控制
         var volumeDrag = false,
@@ -298,7 +306,10 @@
             }
         });
         $(document).on(_touchend, function(e) {
-            if (volumeDrag) volumeDrag = false;
+            if (volumeDrag) {
+                updateVolume(volumevalue);
+                volumeDrag = false;
+            }
         });
         /**
          * 设置音量函数
