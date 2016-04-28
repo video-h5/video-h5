@@ -134,7 +134,7 @@
 
 
         //显示当前视频播放时间
-        video[0].addEventListener("timeupdate", function () {
+        video.on("timeupdate", function () {
             //获取视频播放的当前时间位置
             var currentPos = video[0].currentTime;
             //获取视频总时间
