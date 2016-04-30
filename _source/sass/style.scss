@@ -1,4 +1,12 @@
 @charset "utf-8";
+<<<<<<< HEAD
+$rem-base: 27px;
+$reset:true;
+$Response:true;
+@import "compass", "mobile-mixin";
+@import "mixin-css3","sprite";
+
+=======
 @import "reset";
 @import "compass/css3";
 @import "mixin-css3";
@@ -37,8 +45,15 @@ $htmSizeArray:  floor($rem-base/$ratioFor320),
 @include global_reset_m();
 .mt50{margin-top:rem-calc(50)}
 html,body{height:100%;}
+>>>>>>> master
 /*css end*/
+
 /* video container */
+<<<<<<< HEAD
+%control_btn{
+	position: relative;
+	cursor: pointer;
+=======
 .videoContainer{
 	position:relative;
 	z-index:1;
@@ -54,17 +69,77 @@ html,body{height:100%;}
 		width:100%!important;
 		height:100%!important;
 	}
+>>>>>>> master
 }
+
+.video-js {
+    position: relative;
+    display: block;
+    padding: 0;
+    vertical-align: top;
+    font-size: 10px;
+    line-height: 1;
+    font-weight: normal;
+    font-style: normal;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff;
+    background-color: #000;
+    overflow: hidden;
+    @include user-select(none);
+    .btnPlay {
+    	@extend %control_btn;
+        margin: rem-calc(0 20 0 25);
+    }
+}
+// 暂停状态的样式
+.videoPaused{
+	.btnPlay {
+        @include rem-sprite($video_btn,play,true);
+	}
+}
+// 播放状态时的样式
+.videoPlaying{
+	.btnPlay{
+		 @include rem-sprite($video_btn,pause,true);
+	}
+}
+
+div.vjs-default-skin {
+    padding-top: 56.25%;
+}
+
+.vjs-tech {
+    position: absolute;
+    top: 0;
+    width: 100%!important;
+    height: 100%!important;
+}
+
 
 /* video caption css */
-.caption{
-	
-}
 
-
-
-
-
+<<<<<<< HEAD
+.caption {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    @include display-flex(flex);
+    @include align-items(center);
+    @include justify-content(center);
+    @include flex-direction(column);
+    z-index: 2;
+    .caption_media{
+        width: rem-calc(54);
+        height: rem-calc(55);
+        background: image-url("loading.gif") no-repeat 50% 50%;
+        background-size: contain;
+    }
+    .caption_text{
+        margin-top: rem-calc(20);
+    }
+=======
 
 .topControl{
 	background:rgba(0,0,0,0.3);
@@ -87,9 +162,52 @@ html,body{height:100%;}
 	width:rem-calc(60);
 	height:rem-calc(60);
 	cursor:pointer;
+>>>>>>> master
 }
-.btnPlay{
 
+<<<<<<< HEAD
+
+.topControl {
+    position: absolute;
+    z-index: 9;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: rem-calc(50);
+    padding: rem-calc(8 0);
+    font-size: rem-calc(20);
+    @include display-flex(flex);
+    @include align-items(center);
+    background: rgba(0, 0, 0, 0.3);
+    color: #FFF;
+}
+.hidden{
+	visibility: hidden;
+}
+
+.soundBox {
+    position: relative;
+    margin: rem-calc(0 20);
+    cursor: pointer;
+}
+
+.sound {
+	@extend %control_btn;
+	@include rem-sprite($video_btn,volume,true);
+}
+
+.muted {
+    @include rem-sprite($video_btn,mute,true);
+}
+
+.btnFS {
+	@extend %control_btn;
+    margin-right: rem-calc(20);
+    @include rem-sprite($video_btn,fullscreen,true);
+    .videofullscreen &{
+        @include rem-sprite($video_btn,exitfullscreen);
+    }
+=======
 	margin:0 rem-calc(6) 0 rem-calc(10);
 	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAAA6CAYAAADhu0ooAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoyOTZjMzZmNi1mMzU1LTM0NDEtYjc5Ny1iZDQwMmM2Y2UxN2YiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OTQwREM1NjIwODUyMTFFNjkxMzVBRkEwN0YxODA2OTQiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OTQwREM1NjEwODUyMTFFNjkxMzVBRkEwN0YxODA2OTQiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6OWFkOWU5Y2QtZTIwZi1hYzQyLTg0ZWItZTlmMGZlZDE2NTI2IiBzdFJlZjpkb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6MzFkZjYyOWQtZmIwNi0xMWU1LThlMzgtZTdiMTM3YzljZDQ0Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+ypIBwQAAActJREFUeNrsmjtLA0EQx++CWFuoheA3EEEwaCf4Eey09oGvqFj4wNLCyspKQSxELGwsBJGASlIoClopgoWIlfgoFAVJPP+LcyBHtLm93XVuBn5wKXLLLzPZm9nED4LAS0NkvJSEiIqoiIqoiIqoiIqoiOoS3QR3YMD1D82P2dTfgzq6PgVD4ISjaDmSyU+wAmbBEyfR3978AGbAKsmzFQ3jiMr5jPuu207f3SVQwzmj0XKeAms2ytmkaBjHYIQyzbphaCPZZVDLvTNS6/aBK9qsMhxLt1KoXXkMFLj3ui3gEGyABu5NvQ+6qZxVs1HNsXQrxTUYBzvcRcPYBaMkzlpUxRvoAdvcRT2aexvTcMJQ4rLr/hUvdIrBWnQLNIG9ODepcljwHEyAA24Nw89xbhhkdUm6ltESTTRz4Fn3zV0R3acZ9YJrU38DukBnkpI2M/oKFsAieDexoGlR1Ump0/1pcGtyYZOiarjOgaKtI42kQ+2g/aDVlqSJjK6DSe/7NxqrkZSomh0HQd6Vh3Tc0i1HXn+AedDskqSOjD6Cerou0IRx6WLjHDejeXpM9IIOVyV1nDD8m5D/MIioiIqoiIqoiIqoiKZO9EuAAQCK4XwC6eFmywAAAABJRU5ErkJggg==);
 	background-repeat: no-repeat;
@@ -137,10 +255,36 @@ html,body{height:100%;}
 }
 .videoContainer-center .btnFS{
 	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAAA6CAYAAADhu0ooAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoyOTZjMzZmNi1mMzU1LTM0NDEtYjc5Ny1iZDQwMmM2Y2UxN2YiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OTQ2RTVCRUYwODUyMTFFNjkxMzVBRkEwN0YxODA2OTQiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OTQ2RTVCRUUwODUyMTFFNjkxMzVBRkEwN0YxODA2OTQiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6OWFkOWU5Y2QtZTIwZi1hYzQyLTg0ZWItZTlmMGZlZDE2NTI2IiBzdFJlZjpkb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6MzFkZjYyOWQtZmIwNi0xMWU1LThlMzgtZTdiMTM3YzljZDQ0Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+InnkQAAAAhxJREFUeNrsmstKw0AUhhMRBV1UH6CtNxS7dKEbwbr2GQQRXLh0py/gZePSre7Ep2gXLgS3VrygvbiXihdQxPgHEojDpGaSmWQ6PQc+SNtJ0y9nMtfajuNYvRB9Vo8EiZIoiZIoiZIoiZKodNEN8AYuQCHG9faAI4EbMK9S9BAMgwVQiSkrI2bAsUrRWuB4ImPZWZHCtuDspQiqYCzw3iNYBq2UBIM/2FaV0SYog4ZGmVWS0f8y696EJ6ZsCSwGXp+Ar7QzarmiMSmCuvM3HkCeKbfJlMkluKbFfFfk85L0o2HV2M103rQBgy/b5DyzeZNEw2QndZOVNQRscKqxVrK25FVAXmvsMK3jCHjRvR+N00DZpmSU7Sf9zO6ESGaS0X4JN2sJHAmU/+6F+egVeM9CVDSj+4HjbcFz78BqtzyjvOdjEAxFOLfNnJ/qMypDNGmMRijzAT516l5EYg7cg+cIrDNytuiNzlL0FEyZ2ur6kQPTOre6aSyT7HKWZc51aHXjZrQd8lndG0a2TKi6nW7guKVgDUoX0QNvzYmdvBdME3Wr6bJXbYOyVW+CYIyoL1tmZKVVY902mXiZlSKr425aM6QaJ5LNqnsZAGtMP3nNmbxXvIz6EXv7Q4dBfaeQJqv7RrC0aiwq+sNkNwkrCWXPVIrWNMpsSaWoOy+8zVj2EryCLZWNUdcG/SuFREmUREmUREmUREnUj18BBgAWiW4MvZDJ5gAAAABJRU5ErkJggg==);
+>>>>>>> master
 }
-.volume_none{
-	display:none;
+
+.volume_none {
+    display: none;
 }
+<<<<<<< HEAD
+.volume_box {
+    position: absolute;
+    bottom: rem-calc(40);
+    left: 50%;
+    width: rem-calc(58);
+    height: rem-calc(180);
+    margin-left: rem-calc(-29);
+    border-radius: 3px;
+    background: rgba(200, 200, 200, 0.6);
+    @include display-flex(flex);
+    @include flex-direction(column);
+    @include flex(1);
+    @include align-items(center);
+    span {
+        display: block;
+    }
+    .volumeT {
+        margin: rem-calc(12 0);
+    }
+    .volumeB {
+        margin: rem-calc(12 0);
+    }
+=======
 .volume_box{
 	position:absolute;
 	bottom:rem-calc(60);
@@ -162,98 +306,118 @@ html,body{height:100%;}
 	.volumeB{
 		margin:rem-calc(12) 0;
 	}
-}
-.volume{
-	position:relative;
-	cursor:pointer;
-	width:rem-calc(10);
-	border-radius:rem-calc(10);
-	background:rgba(255,255,255,0.3);
-	@include flexboxChild(1);
-
-	
-}
-.volumeBar{
-	display:block;
-	width:rem-calc(10);
-	border-radius:rem-calc(10);
-	height:100%;
-	position:absolute;
-	bottom:0;
-	left:0;
-	background-color:#ff7f00;
-	z-index:10;
-	&:before{
-		content:'';
-		position:absolute;
-		z-index:2;
-		top:rem-calc(-7);
-		left:50%;
-		margin-left:rem-calc(-7);
-		width:rem-calc(14);
-		height:rem-calc(14);
-		border-radius:100%;
-		background-color:#ff7f00;
-	}
-	&:after{
-		content:'';
-		position:absolute;
-		z-index:1;
-		top:rem-calc(-12);
-		left:50%;
-		margin-left:rem-calc(-12);
-		width:rem-calc(24);
-		height:rem-calc(24);
-		border-radius:100%;
-		background-color:#FFF;
-	}
+>>>>>>> master
 }
 
-
-.time{
-	margin-right:rem-calc(20);
+.volume {
+    position: relative;
+    width: rem-calc(10);
+    border-radius: rem-calc(10);
+    background: rgba(255, 255, 255, 0.3);
+    @include flex(1);
+    cursor: pointer;
 }
+
+.volumeBar {
+    position: absolute;
+    z-index: 10;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: rem-calc(10);
+    height: 100%;
+    border-radius: rem-calc(10);
+    background-color: #ff7f00;
+    &:before {
+        content: '';
+        position: absolute;
+        z-index: 2;
+        top: rem-calc(-7);
+        left: 50%;
+        width: rem-calc(14);
+        height: rem-calc(14);
+        margin-left: rem-calc(-7);
+        border-radius: 100%;
+        background-color: #ff7f00;
+    }
+    &:after {
+        content: '';
+        position: absolute;
+        z-index: 1;
+        top: rem-calc(-12);
+        left: 50%;
+        width: rem-calc(24);
+        height: rem-calc(24);
+        margin-left: rem-calc(-12);
+        border-radius: 100%;
+        background-color: #FFF;
+    }
+}
+
+.time {
+    margin-right: rem-calc(20);
+}
+
 .progress {
-	height:rem-calc(10);
-	position:relative;
-	cursor:pointer;
-	background: rgba(237,237,228,0.3); 
-	//@include flex(1);
-	@include flexboxChild(1);
-	border-radius:rem-calc(10);
+    position: relative;
+    height: rem-calc(10);
+    @include flex(1);
+    border-radius: rem-calc(10);
+    background: rgba(237, 237, 228, 0.3);
+    cursor: pointer;
 }
+
 .progress span {
-	height:100%;
-	position:absolute;
-	top:0;
-	left:0;
-	display:block;
-	border-radius:rem-calc(10);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    height: 100%;
+    border-radius: rem-calc(10);
 }
-.timeBar{
-	z-index:10;
-	width:0;
-	background: #FFF;
-	
+
+.timeBar {
+    z-index: 10;
+    width: 0;
+    background: #FFF;
+    &:after {
+        content: '';
+        position: absolute;
+        width: rem-calc(25);
+        height: rem-calc(25);
+        right: rem-calc(-12.5);
+        top: rem-calc(-7.5);
+        border-radius: 100%;
+        background-color: #FFF;
+    }
 }
-.timeBar:after{
-	content: '';
-	position: absolute;
-	width:rem-calc(25);
-	height:rem-calc(25);
-	background-color: #FFF;
-	right:rem-calc(-12.5);
-	top:rem-calc(-7.5);
-	border-radius:rem-calc(100%);
+
+.bufferBar {
+    z-index: 5;
+    width: 0;
+    background: rgba(237, 237, 228, 0.3);
 }
-.bufferBar{
-	z-index:5;
-	width:0;
-	background: rgba(237,237,228,0.3); 
-	
+
+
+// 全屏模式
+.videofullscreen{
+    .vjs-tech{
+        position: fixed;
+        z-index: 99;
+        background: #000;
+    }
+    .topControl{
+        position: fixed;
+        z-index: 100;
+    }
 }
+
 /* OTHERS CSS */
+
 /* video screen cover */
+<<<<<<< HEAD
+
+=======
 .loading, .init{
 	position:absolute;
 	top:0;
@@ -294,4 +458,5 @@ html,body{height:100%;}
     }
   }
 }
+>>>>>>> master
 
