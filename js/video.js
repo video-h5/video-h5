@@ -69,7 +69,7 @@
             updateVolume(0, 0.5);
             Control.removeClass("hidden")
 
-            
+
             //开始视频缓冲数据 
             setTimeout(startBuffer, 150);
             //显示视频缓冲栏
@@ -132,12 +132,39 @@
 
         //视频事件
         //视频canplay事件
+        var _isplay = false;
+
         video.on('canplay', function() {
             caption.hide(100);
         });
 
-        video.on('playing',function(){
-            caption.hide(100);
+        video.on('playing', function() {
+            _isplay = true;
+            
+        });
+
+        var timer = function() {
+            if (!_isplay) {
+                setTimeout(function() {
+                    caption.show(200);
+                    timer()
+                }, 10)
+            }else{
+                caption.hide(100);
+            }
+        };
+        video.on('play', function() {
+            videoParent.removeClass('videoPaused')
+            videoParent.addClass('videoPlaying');
+
+            _isplay = false;
+            timer();
+
+        });
+
+        video.on('pause', function() {
+            videoParent.addClass('videoPaused');
+            videoParent.removeClass('videoPlaying');
         });
         //视频canplaythrough事件
         //解决浏览器缓存问题
@@ -149,7 +176,7 @@
         });
 
 
-        var oldTime=0;
+        var oldTime = 0;
         /**
          * 显示当前视频播放时间,video.on()绑定事件在部分机器上有bug
          * @return {[type]} [description]
@@ -157,12 +184,12 @@
         video[0].ontimeupdate = function() {
             // 获取视频播放的当前时间位置
             var currentPos = Math.floor(video[0].currentTime);
-            if (currentPos==oldTime) {
+            if (currentPos == oldTime) {
                 return;
-            }else{
-                oldTime=currentPos;
+            } else {
+                oldTime = currentPos;
             }
-            
+
             // 获取视频总时间
             var maxduration = video[0].duration;
             //转换百分比
@@ -176,10 +203,10 @@
             }
         }
 
-        var number =0;
+        var number = 0;
         //视频结束事件
         video.on('ended', function() {
-            _this.pause();
+            video[0].pause();
             number++;
             videoParent.attr('end', number);
         });
@@ -204,7 +231,7 @@
 
         // 面板上的播放按钮
         btn_on_off.on(_touchstart, function() {
-            _this.play();
+            video[0].play();
         });
         //点击视频，播放或者暂停
         video.on(_touchstart, function(e) {
@@ -219,25 +246,11 @@
          */
         this.togglePlay = function() {
             if (video[0].paused || video[0].ended) {
-                _this.play();
+                video[0].play();
             } else {
-                _this.pause();
+                video[0].pause();
             }
         };
-        this.play = function() {
-            if (!videoParent.attr("end")) {
-                caption.show(200);
-            }
-            videoParent.removeClass('videoPaused')
-            videoParent.addClass('videoPlaying');
-            video[0].play();
-        };
-        this.pause = function() {
-            videoParent.addClass('videoPaused');
-            videoParent.removeClass('videoPlaying');
-            video[0].pause();
-        };
-
 
         //视频进度条
         //当视频timebar点击
@@ -350,9 +363,9 @@
         $(document).on(_touchmove, function(e) {
             volumevalue = e.pageY || event.targetTouches[0].pageY;
             if (volumeDrag) {
-                setTimeout(function(){
+                setTimeout(function() {
                     updateVolume(volumevalue);
-                },0)
+                }, 0)
             }
         });
         $(document).on(_touchend, function(e) {
