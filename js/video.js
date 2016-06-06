@@ -136,6 +136,9 @@
             caption.hide(100);
         });
 
+        video.on('playing',function(){
+            caption.hide(100);
+        });
         //视频canplaythrough事件
         //解决浏览器缓存问题
         var completeloaded = false;
@@ -185,8 +188,9 @@
         video.on('seeking', function() {
             //如果视频满载,忽略加载屏幕
             if (!completeloaded) {
-                caption.show(200);
+                return;
             }
+            caption.show(200);
         });
 
         //视频等待更多数据的事件
@@ -221,9 +225,9 @@
             }
         };
         this.play = function() {
-            // if (!videoParent.attr("end")) {
-            //     caption.show(200);
-            // }
+            if (!videoParent.attr("end")) {
+                caption.show(200);
+            }
             videoParent.removeClass('videoPaused')
             videoParent.addClass('videoPlaying');
             video[0].play();
