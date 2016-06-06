@@ -5,9 +5,7 @@ $Response:true;
 @import "compass", "mobile-mixin";
 @import "mixin-css3","sprite";
 
-/*css end*/
-
-/* video container */
+// video container
 %control_btn{
 	position: relative;
 	cursor: pointer;
@@ -31,18 +29,241 @@ $Response:true;
     	@extend %control_btn;
         margin: rem-calc(0 20 0 25);
     }
+
+    // video caption css
+    .caption {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        @include display-flex(flex);
+        @include align-items(center);
+        @include justify-content(center);
+        @include flex-direction(column);
+        z-index: 2;
+        .caption_media{
+            width: rem-calc(54);
+            height: rem-calc(55);
+            background: image-url("loading.gif") no-repeat 50% 50%;
+            background-size: contain;
+        }
+        .caption_text{
+            margin-top: rem-calc(20);
+        }
+    }
+
+    // 播放暂停按钮
+    .panle{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        @include display-flex(flex);
+        @include align-items(center);
+        @include justify-content(center);
+        @include flex-direction(column);
+        z-index: 2;
+        background: rgba(#000, .5);
+        .btn_on_off{
+            width: rem-calc(164);
+            height: rem-calc(164);
+            background: inline-image("btn_on_off.png") no-repeat;
+            background-size: rem-calc(164 164);
+        }
+    }
+    // video control css
+    .topControl {
+        position: absolute;
+        z-index: 9;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: rem-calc(50);
+        padding: rem-calc(8 0);
+        font-size: rem-calc(20);
+        @include display-flex(flex);
+        @include align-items(center);
+        background: rgba(0, 0, 0, 0.3);
+        @include transition(bottom ease-in .25s);
+        color: #FFF;
+        &.hide{
+            bottom: rem-calc(-66);
+        }
+        &.hidden{
+            visibility: hidden;
+        }
+        @at-root .video-js{
+            .soundBox {
+                position: relative;
+                margin: rem-calc(0 20);
+                cursor: pointer;
+            }
+
+            .sound {
+                @extend %control_btn;
+                @include rem-sprite($video_btn,volume,true);
+            }
+
+            .muted {
+                @include rem-sprite($video_btn,mute,true);
+            }
+
+            .btnFS {
+                @extend %control_btn;
+                margin-right: rem-calc(20);
+                @include rem-sprite($video_btn,fullscreen,true);
+                .videofullscreen &{
+                    @include rem-sprite($video_btn,exitfullscreen);
+                }
+            }
+
+            .volume_none {
+                display: none;
+            }
+            .volume_box {
+                position: absolute;
+                bottom: rem-calc(40);
+                left: 50%;
+                width: rem-calc(58);
+                height: rem-calc(180);
+                margin-left: rem-calc(-29);
+                border-radius: 3px;
+                background: rgba(200, 200, 200, 0.6);
+                @include display-flex(flex);
+                @include flex-direction(column);
+                @include flex(1);
+                @include align-items(center);
+                span {
+                    display: block;
+                }
+                .volumeT {
+                    margin: rem-calc(12 0);
+                }
+                .volumeB {
+                    margin: rem-calc(12 0);
+                }
+            }
+
+            .volume {
+                position: relative;
+                width: rem-calc(10);
+                border-radius: rem-calc(10);
+                background: rgba(255, 255, 255, 0.3);
+                @include flex(1);
+                cursor: pointer;
+            }
+
+            .volumeBar {
+                position: absolute;
+                z-index: 10;
+                bottom: 0;
+                left: 0;
+                display: block;
+                width: rem-calc(10);
+                height: 100%;
+                border-radius: rem-calc(10);
+                background-color: #ff7f00;
+                &:before {
+                    content: '';
+                    position: absolute;
+                    z-index: 2;
+                    top: rem-calc(-7);
+                    left: 50%;
+                    width: rem-calc(14);
+                    height: rem-calc(14);
+                    margin-left: rem-calc(-7);
+                    border-radius: 100%;
+                    background-color: #ff7f00;
+                }
+                &:after {
+                    content: '';
+                    position: absolute;
+                    z-index: 1;
+                    top: rem-calc(-12);
+                    left: 50%;
+                    width: rem-calc(24);
+                    height: rem-calc(24);
+                    margin-left: rem-calc(-12);
+                    border-radius: 100%;
+                    background-color: #FFF;
+                }
+            }
+
+            .time {
+                margin-right: rem-calc(20);
+            }
+
+            .progress {
+                position: relative;
+                height: rem-calc(10);
+                @include flex(1);
+                border-radius: rem-calc(10);
+                border-width: rem-calc(20 0 20 0);
+                border-style: solid;
+                border-color: transparent;
+                cursor: pointer;
+            }
+
+            .progress span {
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: block;
+                height: 100%;
+                border-radius: rem-calc(10);
+                &.progress_bg{
+                    width: 100%;
+                    border-radius: rem-calc(10);
+                    background: rgba(237, 237, 228, 0.3);
+                }
+            }
+
+            .timeBar {
+                z-index: 10;
+                width: 0;
+                background: #FFF;
+                &:after {
+                    content: '';
+                    position: absolute;
+                    width: rem-calc(25);
+                    height: rem-calc(25);
+                    right: rem-calc(-12.5);
+                    top: rem-calc(-7.5);
+                    border-radius: 100%;
+                    background-color: #FFF;
+                }
+            }
+
+            .bufferBar {
+                z-index: 5;
+                width: 0;
+                background: rgba(237, 237, 228, 0.3);
+            }
+        }
+    }
+    
+
+    
 }
 // 暂停状态的样式
 .videoPaused{
 	.btnPlay {
         @include rem-sprite($video_btn,play,true);
 	}
+    .panle{
+        @include display-flex(flex);
+    }
 }
 // 播放状态时的样式
 .videoPlaying{
 	.btnPlay{
 		 @include rem-sprite($video_btn,pause,true);
 	}
+    .panle{
+        display: none;
+    }
 }
 
 div.vjs-default-skin {
@@ -57,205 +278,21 @@ div.vjs-default-skin {
 }
 
 
-/* video caption css */
-
-.caption {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    @include display-flex(flex);
-    @include align-items(center);
-    @include justify-content(center);
-    @include flex-direction(column);
-    z-index: 2;
-    .caption_media{
-        width: rem-calc(54);
-        height: rem-calc(55);
-        background: image-url("loading.gif") no-repeat 50% 50%;
-        background-size: contain;
-    }
-    .caption_text{
-        margin-top: rem-calc(20);
-    }
-}
-
-
-.topControl {
-    position: absolute;
-    z-index: 9;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: rem-calc(50);
-    padding: rem-calc(8 0);
-    font-size: rem-calc(20);
-    @include display-flex(flex);
-    @include align-items(center);
-    background: rgba(0, 0, 0, 0.3);
-    color: #FFF;
-}
-.hidden{
-	visibility: hidden;
-}
-
-.soundBox {
-    position: relative;
-    margin: rem-calc(0 20);
-    cursor: pointer;
-}
-
-.sound {
-	@extend %control_btn;
-	@include rem-sprite($video_btn,volume,true);
-}
-
-.muted {
-    @include rem-sprite($video_btn,mute,true);
-}
-
-.btnFS {
-	@extend %control_btn;
-    margin-right: rem-calc(20);
-    @include rem-sprite($video_btn,fullscreen,true);
-    .videofullscreen &{
-        @include rem-sprite($video_btn,exitfullscreen);
-    }
-}
-
-.volume_none {
-    display: none;
-}
-.volume_box {
-    position: absolute;
-    bottom: rem-calc(40);
-    left: 50%;
-    width: rem-calc(58);
-    height: rem-calc(180);
-    margin-left: rem-calc(-29);
-    border-radius: 3px;
-    background: rgba(200, 200, 200, 0.6);
-    @include display-flex(flex);
-    @include flex-direction(column);
-    @include flex(1);
-    @include align-items(center);
-    span {
-        display: block;
-    }
-    .volumeT {
-        margin: rem-calc(12 0);
-    }
-    .volumeB {
-        margin: rem-calc(12 0);
-    }
-}
-
-.volume {
-    position: relative;
-    width: rem-calc(10);
-    border-radius: rem-calc(10);
-    background: rgba(255, 255, 255, 0.3);
-    @include flex(1);
-    cursor: pointer;
-}
-
-.volumeBar {
-    position: absolute;
-    z-index: 10;
-    bottom: 0;
-    left: 0;
-    display: block;
-    width: rem-calc(10);
-    height: 100%;
-    border-radius: rem-calc(10);
-    background-color: #ff7f00;
-    &:before {
-        content: '';
-        position: absolute;
-        z-index: 2;
-        top: rem-calc(-7);
-        left: 50%;
-        width: rem-calc(14);
-        height: rem-calc(14);
-        margin-left: rem-calc(-7);
-        border-radius: 100%;
-        background-color: #ff7f00;
-    }
-    &:after {
-        content: '';
-        position: absolute;
-        z-index: 1;
-        top: rem-calc(-12);
-        left: 50%;
-        width: rem-calc(24);
-        height: rem-calc(24);
-        margin-left: rem-calc(-12);
-        border-radius: 100%;
-        background-color: #FFF;
-    }
-}
-
-.time {
-    margin-right: rem-calc(20);
-}
-
-.progress {
-    position: relative;
-    height: rem-calc(10);
-    @include flex(1);
-    border-radius: rem-calc(10);
-    background: rgba(237, 237, 228, 0.3);
-    cursor: pointer;
-}
-
-.progress span {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: block;
-    height: 100%;
-    border-radius: rem-calc(10);
-}
-
-.timeBar {
-    z-index: 10;
-    width: 0;
-    background: #FFF;
-    &:after {
-        content: '';
-        position: absolute;
-        width: rem-calc(25);
-        height: rem-calc(25);
-        right: rem-calc(-12.5);
-        top: rem-calc(-7.5);
-        border-radius: 100%;
-        background-color: #FFF;
-    }
-}
-
-.bufferBar {
-    z-index: 5;
-    width: 0;
-    background: rgba(237, 237, 228, 0.3);
-}
-
-
 // 全屏模式
 .videofullscreen{
     .vjs-tech{
         position: fixed;
-        z-index: 99;
+        z-index: 98;
         background: #000;
+    }
+    .panle{
+        position: fixed;
+        z-index: 99;
     }
     .topControl{
         position: fixed;
         z-index: 100;
     }
 }
-
-/* OTHERS CSS */
-
-/* video screen cover */
 
 

@@ -5,33 +5,42 @@
         var video = obj,
             // 为video添加父级容器，并获取video父级
             videoParent = video.wrap("<div>").parent(),
-            _controlHtml = "<div class=\"topControl hidden\">" + "<div class=\"btnPlay\" title=\"Play/Pause video\"></div>" + "<div class=\"time\">" + "<span class=\"current\"></span>/<span class=\"duration\"></span>" + "</div>" + "<div class=\"progress\">" + "<span class=\"bufferBar\"></span>" + "<span class=\"timeBar\"></span>" + "</div>" + "<div class=\"soundBox\">" + "<div class=\"sound\" title=\"Mute/Unmute sound\"></div>" + "<span class=\"volume_none\">" + "<div class=\"volume_box\">" + "<span class=\"volumeT\">100</span>" + "<div class=\"volume\" title=\"Set volume\">" + "<span class=\"volumeBar\"></span>" + "</div>" + "<span class=\"volumeB\">0</span>" + "</div>" + "</span>" + "</div>" + "<div class=\"btnFS\" title=\"Switch to full screen\"></div>" + "</div>" + "<div class=\"caption\"><div class=\"caption_media\"></div><div class=\"caption_text\">正在加载，请稍等…</div></div>";
+            _controlHtml = "<div class=\"topControl hidden\">" + "<div class=\"btnPlay\" title=\"Play/Pause video\"></div>" + "<div class=\"time\">" + "<span class=\"current\"></span>/<span class=\"duration\"></span>" + "</div>" + "<div class=\"progress\">" + "<span class=\"progress_bg\"></span>" + "<span class=\"bufferBar\"></span>" + "<span class=\"timeBar\"></span>" + "</div>" + "<div class=\"soundBox\">" + "<div class=\"sound\" title=\"Mute/Unmute sound\"></div>" + "<span class=\"volume_none\">" + "<div class=\"volume_box\">" + "<span class=\"volumeT\">100</span>" + "<div class=\"volume\" title=\"Set volume\">" + "<span class=\"volumeBar\"></span>" + "</div>" + "<span class=\"volumeB\">0</span>" + "</div>" + "</span>" + "</div>" + "<div class=\"btnFS\" title=\"Switch to full screen\"></div>" + "</div>" + "<div class=\"panle\"><div class=\"btn_on_off\"></div></div>" + "<div class=\"caption\"><div class=\"caption_media\"></div><div class=\"caption_text\">正在加载，请稍等…</div></div>";
         videoParent.append(_controlHtml);
 
-        var Control = videoParent.find('.topControl'), //控制条
-            caption = videoParent.find('.caption'), //加载动画
-            current = videoParent.find('.current'), //当前播放时间进度
-            duration = videoParent.find('.duration'), //视频总时间
-            btnPlay = videoParent.find('.btnPlay'), //播放按钮
-            bufferBar = videoParent.find('.bufferBar'), //视频加载进度条
-            progress = videoParent.find('.progress'), //播放进度条包裹div
-            timeBar = videoParent.find('.timeBar'), //视频播放进度条
-            sound = videoParent.find('.sound'), //声音按钮
+        var Control = videoParent.find('.topControl'), // 控制条
+            caption = videoParent.find('.caption'), // 加载动画
+            current = videoParent.find('.current'), // 当前播放时间进度
+            duration = videoParent.find('.duration'), // 视频总时间
+            btnPlay = videoParent.find('.btnPlay'), // 播放按钮
+            bufferBar = videoParent.find('.bufferBar'), // 视频加载进度条
+            progress = videoParent.find('.progress'), // 播放进度条包裹div
+            timeBar = videoParent.find('.timeBar'), // 视频播放进度条
+            sound = videoParent.find('.sound'), // 声音按钮
             soundBox = videoParent.find('.soundBox'),
-            volume_none = videoParent.find('.volume_none'), //声音条包裹div
-            volumeBar = videoParent.find('.volumeBar'), //声音进度条
-            volumeT = videoParent.find('.volumeT'), //当前声音大小
-            volume = videoParent.find('.volume'), //声音背景条
-            btnFS = videoParent.find('.btnFS'); //全屏按钮
+            volume_none = videoParent.find('.volume_none'), // 声音条包裹div
+            volumeBar = videoParent.find('.volumeBar'), // 声音进度条
+            volumeT = videoParent.find('.volumeT'), // 当前声音大小
+            volume = videoParent.find('.volume'), // 声音背景条
+            btnFS = videoParent.find('.btnFS'), // 全屏按钮
+            btn_on_off = videoParent.find('.btn_on_off');
 
         // 将video上的属性拷贝到父级之上，并给固有的class
         videoClassName = video.attr('class');
         videoParent.addClass(videoClassName);
 
+        // loading面板隐藏
+        caption.hide();
         video.attr('class', 'vjs-tech');
 
         //页面加载后移除默认的controls控件
         video.removeAttr('controls');
+
+        var _isSupportTouch = "ontouchstart" in document ? true : false;
+        var _touchstart = _isSupportTouch ? "touchstart" : "mousedown",
+            _touchmove = "ontouchmove" in document ? "touchmove" : "mousemove",
+            _touchend = "ontouchend" in document ? "touchend" : "mouseup";
+
 
         // 判断是否设置了自动播放
         if (video[0].autoplay) {
@@ -41,7 +50,7 @@
             videoParent.addClass("videoPaused")
             video[0].pause()
         }
-        caption.show();
+
 
         // 获取元数据后绑定的事件
         video.on('loadedmetadata', function() {
@@ -59,50 +68,12 @@
             }
             updateVolume(0, 0.5);
             Control.removeClass("hidden")
-                //开始视频缓冲数据 
+
+            
+            //开始视频缓冲数据 
             setTimeout(startBuffer, 150);
-
-            /**
-             * 当获得元数据后3000毫秒隐藏播放控件
-             */
-            var time = setTimeout(function() {
-                Control.animate({ 'bottom': -Control.height() }, 250);
-                volume_none.hide();
-            }, 5000);
-
-            // 为父元素绑定鼠标和点击事件
-            videoParent.on("mouseenter", function(e) {
-                clearTimeout(time);
-                e.preventDefault();
-                Control.animate({ 'bottom': 0 }, 250);
-            });
-            videoParent.on('mouseleave', function(e) {
-                e.preventDefault();
-                if (!volumeDrag && !timeDrag) {
-                    time = setTimeout(function() {
-                        Control.animate({ 'bottom': -Control.height() }, 250);
-                        volume_none.hide();
-                    }, 5000);
-                }
-            });
-
-            videoParent.on("touchstart touchmove", function() {
-                clearTimeout(time);
-                Control.animate({ 'bottom': 0 }, 250);
-            });
-
-            videoParent.on("touchend touchcancel", function() {
-                clearTimeout(time);
-                time = setTimeout(function() {
-                    Control.animate({ 'bottom': -Control.height() }, 250);
-                    volume_none.hide();
-                }, 3000);
-
-            })
-
-
             //显示视频缓冲栏
-            var startBuffer = function() {
+            function startBuffer() {
                 //获取缓冲数据的最后一帧的时间
                 var currentBuffer = video[0].buffered.end(0);
                 //获取视频总时间
@@ -116,7 +87,48 @@
                     setTimeout(startBuffer, 500);
                 }
             };
+            /**
+             * 当获得元数据后5秒隐藏播放控件
+             */
+            var time = setTimeout(function() {
+                Control.addClass('hide');
+                volume_none.hide();
+            }, 5000);
+
+            // 通过判断是否支持touch事件为父元素绑定事件
+            if (_isSupportTouch) {
+                videoParent.on("touchstart touchmove", function() {
+                    clearTimeout(time);
+                    Control.removeClass('hide');
+                });
+
+                videoParent.on("touchend touchcancel", function() {
+                    clearTimeout(time);
+                    time = setTimeout(function() {
+                        Control.addClass('hide');
+                        volume_none.hide();
+                    }, 3000);
+
+                })
+            } else {
+                videoParent.on("mouseenter", function(e) {
+                    clearTimeout(time);
+                    e.preventDefault();
+                    Control.removeClass('hide');
+                });
+                videoParent.on('mouseleave', function(e) {
+                    e.preventDefault();
+                    if (!volumeDrag && !timeDrag) {
+                        time = setTimeout(function() {
+                            Control.addClass('hide');
+                            volume_none.hide();
+                        }, 5000);
+                    }
+                });
+            }
+
         });
+
 
         //视频事件
         //视频canplay事件
@@ -127,35 +139,46 @@
         //视频canplaythrough事件
         //解决浏览器缓存问题
         var completeloaded = false;
+
         video.on('canplaythrough', function() {
             completeloaded = true;
 
         });
 
 
-        //显示当前视频播放时间
-        video.on("timeupdate", function() {
-            //获取视频播放的当前时间位置
-            var currentPos = video[0].currentTime;
-            //获取视频总时间
+        var oldTime=0;
+        /**
+         * 显示当前视频播放时间,video.on()绑定事件在部分机器上有bug
+         * @return {[type]} [description]
+         */
+        video[0].ontimeupdate = function() {
+            // 获取视频播放的当前时间位置
+            var currentPos = Math.floor(video[0].currentTime);
+            if (currentPos==oldTime) {
+                return;
+            }else{
+                oldTime=currentPos;
+            }
+            
+            // 获取视频总时间
             var maxduration = video[0].duration;
             //转换百分比
             var perc = 100 * currentPos / maxduration;
-            //设置播放进度条长度
+            // 设置播放进度条长度
             timeBar.css('width', perc + '%');
-            //写入播放的时间
-            $(".text").text(currentPos)
+            // 写入播放的时间
             current.html(_this.timeFormat(currentPos));
             if (duration.text() == _this.timeFormat(0) && video[0].duration > 1) {
                 duration.text(_this.timeFormat(video[0].duration));
             }
-        });
+        }
 
-
+        var number =0;
         //视频结束事件
         video.on('ended', function() {
-            btnPlay.removeClass('paused');
-            video[0].pause();
+            _this.pause();
+            number++;
+            videoParent.attr('end', number);
         });
 
         //视频寻求事件
@@ -174,10 +197,11 @@
         /**
          * 控件事件绑定
          */
-        var _touchstart = "ontouchstart" in document ? "touchstart" : "mousedown",
-            _touchmove = "ontouchmove" in document ? "touchmove" : "mousemove",
-            _touchend = "ontouchend" in document ? "touchend" : "mouseup";
 
+        // 面板上的播放按钮
+        btn_on_off.on(_touchstart, function() {
+            _this.play();
+        });
         //点击视频，播放或者暂停
         video.on(_touchstart, function(e) {
             if (_this.isInFullScreen() || videoParent.hasClass('videofullscreen')) return;
@@ -197,6 +221,9 @@
             }
         };
         this.play = function() {
+            // if (!videoParent.attr("end")) {
+            //     caption.show(200);
+            // }
             videoParent.removeClass('videoPaused')
             videoParent.addClass('videoPlaying');
             video[0].play();
@@ -213,6 +240,8 @@
         var timeDrag = false, // 检查拖动事件
             timevalue,
             ispaused = null;
+
+
         //鼠标视频进度条拖动事件
         progress.on(_touchstart, function(e) {
             timeDrag = true;
@@ -223,11 +252,13 @@
                 video[0].pause()
             }
         });
+
         $(document).on(_touchmove, function(e) {
             if (timeDrag) {
                 timevalue = e.pageX || event.targetTouches[0].pageX;
-                $(".text").text(timevalue + "" + timeDrag)
-                updatebar(timevalue);
+                setTimeout(function() {
+                    updatebar(timevalue);
+                }, 0)
             }
         });
         $(document).on(_touchend, function() {
@@ -239,11 +270,12 @@
                 timeDrag = false;
             }
         });
+
         /**
          * 进度条函数
          * @param  {number} x 鼠标或者手指当前坐标位置
          */
-        var updatebar = function(x) {
+        function updatebar(x) {
             //计算阻力位置
             //和更新视频currenttime
             //进度条
@@ -261,14 +293,12 @@
             current.text(_this.timeFormat(video[0].currentTime));
         };
 
-
         /**
          * 为音量调节绑定事件
          */
         soundBox.on('mouseenter', function(event) {
             event.preventDefault();
-            touchIsSupport = "ontouchstart" in document ? true : false;
-            if (!touchIsSupport) {
+            if (!_isSupportTouch) {
                 volume_none.show();
             }
         });
@@ -316,7 +346,9 @@
         $(document).on(_touchmove, function(e) {
             volumevalue = e.pageY || event.targetTouches[0].pageY;
             if (volumeDrag) {
-                updateVolume(volumevalue);
+                setTimeout(function(){
+                    updateVolume(volumevalue);
+                },0)
             }
         });
         $(document).on(_touchend, function(e) {
@@ -325,12 +357,13 @@
                 volumeDrag = false;
             }
         });
+
         /**
          * 设置音量函数
          * @param  {number} x   鼠标或者手指偏移量
          * @param  {number} vol 用来设置具体的偏移值
          */
-        var updateVolume = function(x, vol) {
+        function updateVolume(x, vol) {
             var percentage;
             if (vol) {
                 percentage = vol * 100;
@@ -367,7 +400,7 @@
                 //进入全屏，添加全屏clas
                 if (videoParent.hasClass('videofullscreen')) {
                     videoParent.removeClass("videofullscreen")
-                    Control.css('bottom', '0px');
+                    Control.removeClass('hide');
                 } else {
                     videoParent.addClass("videofullscreen")
                 }
