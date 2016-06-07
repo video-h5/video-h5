@@ -3,12 +3,11 @@ $rem-base: 27px;
 $reset:true;
 $Response:true;
 @import "compass", "mobile-mixin";
-@import "mixin-css3","sprite";
-
+@import "mixin-css3", "sprite";
 // video container
-%control_btn{
-	position: relative;
-	cursor: pointer;
+%control_btn {
+    position: relative;
+    cursor: pointer;
 }
 
 .video-js {
@@ -26,10 +25,9 @@ $Response:true;
     overflow: hidden;
     @include user-select(none);
     .btnPlay {
-    	@extend %control_btn;
+        @extend %control_btn;
         margin: rem-calc(0 20 0 25);
     }
-
     // video caption css
     .caption {
         position: absolute;
@@ -42,19 +40,18 @@ $Response:true;
         @include justify-content(center);
         @include flex-direction(column);
         z-index: 2;
-        .caption_media{
+        .caption_media {
             width: rem-calc(54);
             height: rem-calc(55);
             background: image-url("loading.gif") no-repeat 50% 50%;
             background-size: contain;
         }
-        .caption_text{
+        .caption_text {
             margin-top: rem-calc(20);
         }
     }
-
     // 播放暂停按钮
-    .panle{
+    .panle {
         position: absolute;
         top: 0;
         left: 0;
@@ -66,12 +63,23 @@ $Response:true;
         @include flex-direction(column);
         z-index: 2;
         background: rgba(#000, .5);
-        .btn_on_off{
+        .btn_on_off {
             width: rem-calc(164);
             height: rem-calc(164);
-            background: inline-image("btn_on_off.png") no-repeat;
+            padding: rem-calc(5);
+            background: inline-image("btn_on_off.png") no-repeat center;
             background-size: rem-calc(164 164);
         }
+    }
+    .video_mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        background: rgba(#000, 0);
+        @include transform(translateZ(0));
     }
     // video control css
     .topControl {
@@ -88,37 +96,30 @@ $Response:true;
         background: rgba(0, 0, 0, 0.3);
         @include transition(bottom ease-in .25s);
         color: #FFF;
-        &.hide{
+        &.hide {
             bottom: rem-calc(-66);
         }
-        &.hidden{
+        &.hidden {
             visibility: hidden;
         }
-        @at-root .video-js{
+        @at-root .video-js {
             .soundBox {
                 position: relative;
                 margin: rem-calc(0 20);
                 cursor: pointer;
             }
-
             .sound {
                 @extend %control_btn;
-                @include rem-sprite($video_btn,volume,true);
+                @include rem-sprite($video_btn, volume, true);
             }
-
             .muted {
-                @include rem-sprite($video_btn,mute,true);
+                @include rem-sprite($video_btn, mute, true);
             }
-
             .btnFS {
                 @extend %control_btn;
                 margin-right: rem-calc(20);
-                @include rem-sprite($video_btn,fullscreen,true);
-                .videofullscreen &{
-                    @include rem-sprite($video_btn,exitfullscreen);
-                }
+                @include rem-sprite($video_btn, fullscreen, true);
             }
-
             .volume_none {
                 display: none;
             }
@@ -145,7 +146,6 @@ $Response:true;
                     margin: rem-calc(12 0);
                 }
             }
-
             .volume {
                 position: relative;
                 width: rem-calc(10);
@@ -154,7 +154,6 @@ $Response:true;
                 @include flex(1);
                 cursor: pointer;
             }
-
             .volumeBar {
                 position: absolute;
                 z-index: 10;
@@ -190,11 +189,9 @@ $Response:true;
                     background-color: #FFF;
                 }
             }
-
             .time {
                 margin-right: rem-calc(20);
             }
-
             .progress {
                 position: relative;
                 height: rem-calc(10);
@@ -205,7 +202,6 @@ $Response:true;
                 border-color: transparent;
                 cursor: pointer;
             }
-
             .progress span {
                 position: absolute;
                 top: 0;
@@ -213,13 +209,12 @@ $Response:true;
                 display: block;
                 height: 100%;
                 border-radius: rem-calc(10);
-                &.progress_bg{
+                &.progress_bg {
                     width: 100%;
                     border-radius: rem-calc(10);
                     background: rgba(237, 237, 228, 0.3);
                 }
             }
-
             .timeBar {
                 z-index: 10;
                 width: 0;
@@ -235,7 +230,6 @@ $Response:true;
                     background-color: #FFF;
                 }
             }
-
             .bufferBar {
                 z-index: 5;
                 width: 0;
@@ -243,25 +237,24 @@ $Response:true;
             }
         }
     }
-    
-
-    
 }
+
 // 暂停状态的样式
-.videoPaused{
-	.btnPlay {
-        @include rem-sprite($video_btn,play,true);
-	}
-    .panle{
+.videoPaused {
+    .btnPlay {
+        @include rem-sprite($video_btn, play, true);
+    }
+    .panle {
         @include display-flex(flex);
     }
 }
+
 // 播放状态时的样式
-.videoPlaying{
-	.btnPlay{
-		 @include rem-sprite($video_btn,pause,true);
-	}
-    .panle{
+.videoPlaying {
+    .btnPlay {
+        @include rem-sprite($video_btn, pause, true);
+    }
+    .panle {
         display: none;
     }
 }
@@ -277,22 +270,26 @@ div.vjs-default-skin {
     height: 100%!important;
 }
 
-
 // 全屏模式
-.videofullscreen{
-    .vjs-tech{
+.videofullscreen {
+    .vjs-tech {
         position: fixed;
-        z-index: 98;
+        z-index: 97;
         background: #000;
     }
-    .panle{
+    .video_mask {
+        position: fixed;
+        z-index: 98;
+    }
+    .panle {
         position: fixed;
         z-index: 99;
     }
-    .topControl{
+    .topControl {
         position: fixed;
         z-index: 100;
     }
+    .btnFS {
+        @include rem-sprite($video_btn, exitfullscreen);
+    }
 }
-
-

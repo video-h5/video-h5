@@ -5,7 +5,7 @@
         var video = obj,
             // 为video添加父级容器，并获取video父级
             videoParent = video.wrap("<div>").parent(),
-            _controlHtml = "<div class=\"topControl hidden\">" + "<div class=\"btnPlay\" title=\"Play/Pause video\"></div>" + "<div class=\"time\">" + "<span class=\"current\"></span>/<span class=\"duration\"></span>" + "</div>" + "<div class=\"progress\">" + "<span class=\"progress_bg\"></span>" + "<span class=\"bufferBar\"></span>" + "<span class=\"timeBar\"></span>" + "</div>" + "<div class=\"soundBox\">" + "<div class=\"sound\" title=\"Mute/Unmute sound\"></div>" + "<span class=\"volume_none\">" + "<div class=\"volume_box\">" + "<span class=\"volumeT\">100</span>" + "<div class=\"volume\" title=\"Set volume\">" + "<span class=\"volumeBar\"></span>" + "</div>" + "<span class=\"volumeB\">0</span>" + "</div>" + "</span>" + "</div>" + "<div class=\"btnFS\" title=\"Switch to full screen\"></div>" + "</div>" + "<div class=\"panle\"><div class=\"btn_on_off\"></div></div>" + "<div class=\"caption\"><div class=\"caption_media\"></div><div class=\"caption_text\">正在加载，请稍等…</div></div>";
+            _controlHtml = "<div class=\"topControl hidden\">" + "<div class=\"btnPlay\" title=\"Play/Pause video\"></div>" + "<div class=\"time\">" + "<span class=\"current\"></span>/<span class=\"duration\"></span>" + "</div>" + "<div class=\"progress\">" + "<span class=\"progress_bg\"></span>" + "<span class=\"bufferBar\"></span>" + "<span class=\"timeBar\"></span>" + "</div>" + "<div class=\"soundBox\">" + "<div class=\"sound\" title=\"Mute/Unmute sound\"></div>" + "<span class=\"volume_none\">" + "<div class=\"volume_box\">" + "<span class=\"volumeT\">100</span>" + "<div class=\"volume\" title=\"Set volume\">" + "<span class=\"volumeBar\"></span>" + "</div>" + "<span class=\"volumeB\">0</span>" + "</div>" + "</span>" + "</div>" + "<div class=\"btnFS\" title=\"Switch to full screen\"></div>" + "</div>" + "<div class=\"panle\"><div class=\"btn_on_off\"></div></div>"+"<div class=\"video_mask\"></div>" + "<div class=\"caption\"><div class=\"caption_media\"></div><div class=\"caption_text\">正在加载，请稍等…</div></div>";
         videoParent.append(_controlHtml);
 
         var Control = videoParent.find('.topControl'), // 控制条
@@ -24,6 +24,7 @@
             volume = videoParent.find('.volume'), // 声音背景条
             btnFS = videoParent.find('.btnFS'), // 全屏按钮
             btn_on_off = videoParent.find('.btn_on_off');
+            mask = videoParent.find('.video_mask');
 
         // 将video上的属性拷贝到父级之上，并给固有的class
         videoClassName = video.attr('class');
@@ -138,9 +139,19 @@
             caption.hide(100);
         });
 
+        var timer1 = function() {
+            if (video[0].currentTime < 1) {
+                setTimeout(function() {
+                    timer1()
+                }, 250)
+            } else {
+                _isplay = true;
+            }
+
+        }
+
         video.on('playing', function() {
-            _isplay = true;
-            
+            timer1();
         });
 
         var timer = function() {
@@ -149,7 +160,7 @@
                     caption.show(200);
                     timer()
                 }, 10)
-            }else{
+            } else {
                 caption.hide(100);
             }
         };
@@ -158,13 +169,14 @@
             videoParent.addClass('videoPlaying');
 
             _isplay = false;
-            timer();
-
+            timer();         
         });
 
         video.on('pause', function() {
             videoParent.addClass('videoPaused');
             videoParent.removeClass('videoPlaying');
+
+            
         });
         //视频canplaythrough事件
         //解决浏览器缓存问题
@@ -181,8 +193,13 @@
          * 显示当前视频播放时间,video.on()绑定事件在部分机器上有bug
          * @return {[type]} [description]
          */
-        video[0].ontimeupdate = function() {
+
+        video[0].addEventListener("timeupdate", function() {
             // 获取视频播放的当前时间位置
+            if (!_isplay) {
+                timer1();
+            }
+            
             var currentPos = Math.floor(video[0].currentTime);
             if (currentPos == oldTime) {
                 return;
@@ -201,7 +218,7 @@
             if (duration.text() == _this.timeFormat(0) && video[0].duration > 1) {
                 duration.text(_this.timeFormat(video[0].duration));
             }
-        }
+        }, false);
 
         var number = 0;
         //视频结束事件
@@ -228,13 +245,13 @@
         /**
          * 控件事件绑定
          */
-
+        
         // 面板上的播放按钮
         btn_on_off.on(_touchstart, function() {
             video[0].play();
         });
         //点击视频，播放或者暂停
-        video.on(_touchstart, function(e) {
+        mask.on(_touchstart, function(e) {
             if (_this.isInFullScreen() || videoParent.hasClass('videofullscreen')) return;
             _this.togglePlay();
         });
@@ -268,6 +285,7 @@
             if (!video[0].paused) {
                 video[0].pause()
             }
+            e.preventDefault();
         });
 
         $(document).on(_touchmove, function(e) {
