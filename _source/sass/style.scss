@@ -274,16 +274,20 @@ div.vjs-default-skin {
 .videofullscreen {
     .vjs-tech {
         position: fixed;
-        z-index: 97;
+        z-index: 96;
         background: #000;
     }
     .video_mask {
         position: fixed;
-        z-index: 98;
+        z-index: 97;
     }
     .panle {
         position: fixed;
         z-index: 99;
+    }
+    .caption{
+        position: fixed;
+        z-index: 98;
     }
     .topControl {
         position: fixed;

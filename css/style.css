@@ -85,8 +85,9 @@ div.vjs-default-skin { padding-top: 56.25%; }
 
 .vjs-tech { position: absolute; top: 0; width: 100% !important; height: 100% !important; }
 
-.videofullscreen .vjs-tech { position: fixed; z-index: 97; background: #000; }
-.videofullscreen .video_mask { position: fixed; z-index: 98; }
+.videofullscreen .vjs-tech { position: fixed; z-index: 96; background: #000; }
+.videofullscreen .video_mask { position: fixed; z-index: 97; }
 .videofullscreen .panle { position: fixed; z-index: 99; }
+.videofullscreen .caption { position: fixed; z-index: 98; }
 .videofullscreen .topControl { position: fixed; z-index: 100; }
 .videofullscreen .btnFS { width: 1.62963rem; height: 1.62963rem; background-position: 0 0; }
