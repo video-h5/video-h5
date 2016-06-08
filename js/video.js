@@ -23,7 +23,7 @@
             volumeT = videoParent.find('.volumeT'), // 当前声音大小
             volume = videoParent.find('.volume'), // 声音背景条
             btnFS = videoParent.find('.btnFS'), // 全屏按钮
-            btn_on_off = videoParent.find('.btn_on_off');
+            btn_on_off = videoParent.find('.btn_on_off'),
             mask = videoParent.find('.video_mask');
 
         // 将video上的属性拷贝到父级之上，并给固有的class
