@@ -5,7 +5,7 @@
         var video = obj,
             // 为video添加父级容器，并获取video父级
             videoParent = video.wrap("<div>").parent(),
-            _controlHtml = "<div class=\"topControl hidden\">" + "<div class=\"btnPlay\" title=\"Play/Pause video\"></div>" + "<div class=\"time\">" + "<span class=\"current\"></span>/<span class=\"duration\"></span>" + "</div>" + "<div class=\"progress\">" + "<span class=\"progress_bg\"></span>" + "<span class=\"bufferBar\"></span>" + "<span class=\"timeBar\"></span>" + "</div>" + "<div class=\"soundBox\">" + "<div class=\"sound\" title=\"Mute/Unmute sound\"></div>" + "<span class=\"volume_none\">" + "<div class=\"volume_box\">" + "<span class=\"volumeT\">100</span>" + "<div class=\"volume\" title=\"Set volume\">" + "<span class=\"volumeBar\"></span>" + "</div>" + "<span class=\"volumeB\">0</span>" + "</div>" + "</span>" + "</div>" + "<div class=\"btnFS\" title=\"Switch to full screen\"></div>" + "</div>" + "<div class=\"panle\"><div class=\"btn_on_off\"></div></div>"+"<div class=\"video_mask\"></div>" + "<div class=\"caption\"><div class=\"caption_media\"></div><div class=\"caption_text\">正在加载，请稍等…</div></div>";
+            _controlHtml = "<div class=\"topControl hidden\">" + "<div class=\"btnPlay\" title=\"Play/Pause video\"></div>" + "<div class=\"time\">" + "<span class=\"current\"></span>/<span class=\"duration\"></span>" + "</div>" + "<div class=\"progress\">" + "<span class=\"progress_bg\"></span>" + "<span class=\"bufferBar\"></span>" + "<span class=\"timeBar\"></span>" + "</div>" + "<div class=\"soundBox\">" + "<div class=\"sound\" title=\"Mute/Unmute sound\"></div>" + "<span class=\"volume_none\">" + "<div class=\"volume_box\">" + "<span class=\"volumeT\">100</span>" + "<div class=\"volume\" title=\"Set volume\">" + "<span class=\"volumeBar\"></span>" + "</div>" + "<span class=\"volumeB\">0</span>" + "</div>" + "</span>" + "</div>" + "<div class=\"btnFS\" title=\"Switch to full screen\"></div>" + "</div>" + "<div class=\"panle\"><div class=\"btn_on_off\"></div></div>" + "<div class=\"video_mask\"></div>" + "<div class=\"caption\"><div class=\"caption_media\"></div><div class=\"caption_text\">正在加载，请稍等…</div></div>";
         videoParent.append(_controlHtml);
 
         var Control = videoParent.find('.topControl'), // 控制条
@@ -169,14 +169,14 @@
             videoParent.addClass('videoPlaying');
 
             _isplay = false;
-            timer();         
+            timer();
         });
 
         video.on('pause', function() {
             videoParent.addClass('videoPaused');
             videoParent.removeClass('videoPlaying');
 
-            
+
         });
         //视频canplaythrough事件
         //解决浏览器缓存问题
@@ -199,7 +199,7 @@
             if (!_isplay) {
                 timer1();
             }
-            
+
             var currentPos = Math.floor(video[0].currentTime);
             if (currentPos == oldTime) {
                 return;
@@ -245,7 +245,7 @@
         /**
          * 控件事件绑定
          */
-        
+
         // 面板上的播放按钮
         btn_on_off.on(_touchstart, function() {
             video[0].play();
@@ -381,9 +381,7 @@
         $(document).on(_touchmove, function(e) {
             volumevalue = e.pageY || event.targetTouches[0].pageY;
             if (volumeDrag) {
-                setTimeout(function() {
-                    updateVolume(volumevalue);
-                }, 0)
+                updateVolume(volumevalue);
             }
         });
         $(document).on(_touchend, function(e) {
