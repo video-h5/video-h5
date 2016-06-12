@@ -57,7 +57,7 @@ $Response:true;
         left: 0;
         width: 100%;
         height: 100%;
-        @include display-flex(flex);
+        // @include display-flex(flex);
         @include align-items(center);
         @include justify-content(center);
         @include flex-direction(column);
