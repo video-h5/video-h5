@@ -2,8 +2,7 @@
 $rem-base: 27px;
 $reset:true;
 $Response:true;
-@import "compass", "mobile-mixin";
-@import "mixin-css3", "sprite";
+@import "compass", "mobile-mixin","mobile-mixin";
 // video container
 %control_btn {
     position: relative;
@@ -43,7 +42,7 @@ $Response:true;
         .caption_media {
             width: rem-calc(54);
             height: rem-calc(55);
-            background: image-url("loading.gif") no-repeat 50% 50%;
+            background: inline-image("loading.gif") no-repeat 50% 50%;
             background-size: contain;
         }
         .caption_text {
@@ -110,15 +109,15 @@ $Response:true;
             }
             .sound {
                 @extend %control_btn;
-                @include rem-sprite($video_btn, volume, true);
+                @include rem-sprite("video_btn/*.png", volume, true,$line-image:true);
             }
             .muted {
-                @include rem-sprite($video_btn, mute, true);
+                @include rem-sprite("video_btn/*.png", mute, true,$line-image:true);
             }
             .btnFS {
                 @extend %control_btn;
                 margin-right: rem-calc(20);
-                @include rem-sprite($video_btn, fullscreen, true);
+                @include rem-sprite("video_btn/*.png", fullscreen, true,$line-image:true);
             }
             .volume_none {
                 display: none;
@@ -242,7 +241,7 @@ $Response:true;
 // 暂停状态的样式
 .videoPaused {
     .btnPlay {
-        @include rem-sprite($video_btn, play, true);
+        @include rem-sprite("video_btn/*.png", play, true,$line-image:true);
     }
     .panle {
         @include display-flex(flex);
@@ -252,7 +251,7 @@ $Response:true;
 // 播放状态时的样式
 .videoPlaying {
     .btnPlay {
-        @include rem-sprite($video_btn, pause, true);
+        @include rem-sprite("video_btn/*.png", pause, true,$line-image:true);
     }
     .panle {
         display: none;
@@ -294,6 +293,6 @@ div.vjs-default-skin {
         z-index: 100;
     }
     .btnFS {
-        @include rem-sprite($video_btn, exitfullscreen);
+        @include rem-sprite("video_btn/*.png", exitfullscreen,$line-image:true);
     }
 }
