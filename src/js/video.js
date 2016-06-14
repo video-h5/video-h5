@@ -61,12 +61,12 @@
              * 2.设置视频总时间
              * 3.设置默认声音音量
              */
-           
+
             current.text(_this.timeFormat(0));
             if (video[0].duration > 1) {
                 duration.text(_this.timeFormat(video[0].duration));
                 if (video[0].duration === Infinity) {
-                     duration.text(_this.timeFormat(0));
+                    duration.text(_this.timeFormat(0));
                 }
             } else {
                 duration.text(_this.timeFormat(0));
@@ -134,6 +134,10 @@
 
         });
 
+        video.on('loadeddata', function() {
+            console.log(111);
+            Control.removeClass("hidden")
+        });
 
         //视频事件
         //视频canplay事件
