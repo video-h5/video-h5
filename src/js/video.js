@@ -52,6 +52,7 @@
             video[0].pause()
         }
 
+        var _isinit=false;
         function initData(){
             /**
              * 设置视频属性
@@ -129,13 +130,13 @@
                     }
                 });
             }
+            _isinit=true;
         }
 
         // 获取元数据后绑定的事件
-        var _isinit=false;
+        
         video.on('loadedmetadata', function() {
             initData();
-            _isinit=true;
         });
 
         video.on('loadeddata', function() {
