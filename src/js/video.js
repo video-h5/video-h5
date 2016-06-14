@@ -52,21 +52,21 @@
             video[0].pause()
         }
 
+        var _isinit = false;
 
-        // 获取元数据后绑定的事件
-        video.on('loadedmetadata', function() {
+        function initData() {
             /**
              * 设置视频属性
              * 1.设置视频开始时间
              * 2.设置视频总时间
              * 3.设置默认声音音量
              */
-           
+
             current.text(_this.timeFormat(0));
             if (video[0].duration > 1) {
                 duration.text(_this.timeFormat(video[0].duration));
                 if (video[0].duration === Infinity) {
-                     duration.text(_this.timeFormat(0));
+                    duration.text(_this.timeFormat(0));
                 }
             } else {
                 duration.text(_this.timeFormat(0));
@@ -131,9 +131,18 @@
                     }
                 });
             }
-
+            _isinit = true;
+        }
+        // 获取元数据后绑定的事件
+        video.on('loadedmetadata', function() {
+            initData();
         });
 
+        video.on('loadeddata', function() {
+            if (!_isinit) {
+                initData();
+            }
+        });
 
         //视频事件
         //视频canplay事件
@@ -197,6 +206,9 @@
          */
 
         video[0].addEventListener("timeupdate", function() {
+            if (!_isinit) {
+                initData();
+            }
             // 获取视频播放的当前时间位置
             if (!_isplay) {
                 timer1();
