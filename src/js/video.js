@@ -206,6 +206,9 @@
          */
 
         video[0].addEventListener("timeupdate", function() {
+            if (!_isinit) {
+                initData();
+            }
             // 获取视频播放的当前时间位置
             if (!_isplay) {
                 timer1();
