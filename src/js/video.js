@@ -52,9 +52,7 @@
             video[0].pause()
         }
 
-
-        // 获取元数据后绑定的事件
-        video.on('loadedmetadata', function() {
+        function initData(){
             /**
              * 设置视频属性
              * 1.设置视频开始时间
@@ -131,12 +129,19 @@
                     }
                 });
             }
+        }
 
+        // 获取元数据后绑定的事件
+        var _isinit=false;
+        video.on('loadedmetadata', function() {
+            initData();
+            _isinit=true;
         });
 
         video.on('loadeddata', function() {
-            console.log(111);
-            // Control.removeClass("hidden")
+            if (!_isinit) {
+                initData();
+            }
         });
 
         //视频事件
