@@ -52,8 +52,9 @@
             video[0].pause()
         }
 
-        var _isinit=false;
-        function initData(){
+        var _isinit = false;
+
+        function initData() {
             /**
              * 设置视频属性
              * 1.设置视频开始时间
@@ -130,11 +131,9 @@
                     }
                 });
             }
-            _isinit=true;
+            _isinit = true;
         }
-
         // 获取元数据后绑定的事件
-        
         video.on('loadedmetadata', function() {
             initData();
         });
