@@ -136,7 +136,7 @@
 
         video.on('loadeddata', function() {
             console.log(111);
-            Control.removeClass("hidden")
+            // Control.removeClass("hidden")
         });
 
         //视频事件
