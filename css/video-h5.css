@@ -51,7 +51,7 @@
 
 div.vjs-default-skin { padding-top: 56.25%; }
 
-.vjs-tech { position: absolute; top: 0; width: 100% !important; height: 100% !important; }
+.vjs-tech { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; }
 
 .videofullscreen .vjs-tech { position: fixed; z-index: 96; background: #000; }
 .videofullscreen .video_mask { position: fixed; z-index: 97; }
